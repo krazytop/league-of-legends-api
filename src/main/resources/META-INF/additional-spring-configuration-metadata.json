@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "league-of-legends.api-key",
+      "type": "java.lang.String",
+      "description": "Application API key."
+    }
+] }

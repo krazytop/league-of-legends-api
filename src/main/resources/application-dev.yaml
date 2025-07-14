@@ -1,0 +1,16 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: league-of-legends-api
+  web:
+    resources:
+      add-mappings: false
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/LeagueOfLegends
+    web:
+      pageable:
+        default-page-size: 30
+league-of-legends:
+  api-key: ${API_KEY}
