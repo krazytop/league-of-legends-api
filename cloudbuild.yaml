@@ -1,6 +1,7 @@
 steps:
   # 1. Exécution des tests Maven
   - name: 'maven:3.9.10-eclipse-temurin-21-alpine'
+    entrypoint: mvn
     args: ['test']
     dir: '.'
     id: 'run-maven-tests'
