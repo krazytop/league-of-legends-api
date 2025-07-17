@@ -1,20 +1,21 @@
 steps:
   # 1. Exécution des tests Maven
   - name: 'maven:3.9.10-eclipse-temurin-21-alpine'
-    entrypoint: mvn
+    entrypoint: 'mvn'
     args: ['test']
     dir: '.'
     id: 'run-maven-tests'
 
   # 2. Analyse SonarQube
   - name: 'maven:3.9.10-eclipse-temurin-21-alpine'
+    entrypoint: 'mvn'
+    dir: '.'
     args:
       - 'sonar:sonar'
       - '-Dsonar.projectKey=league-of-legends-api'
       - '-Dsonar.organization=$$_SONAR_ORGANIZATION'
       - '-Dsonar.host.url=$$_SONAR_HOST_URL'
       - '-Dsonar.token=$$_SONAR_TOKEN'
-    dir: '.'
     secretEnv:
       - '_SONAR_TOKEN'
       - '_SONAR_HOST_URL'
