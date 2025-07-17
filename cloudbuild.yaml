@@ -1,13 +1,13 @@
 steps:
   # 1. Exécution des tests Maven
-  - name: 'gcr.io/cloud-builders/mvn'
+  - name: 'maven:3.9.6-eclipse-temurin-21-alpine'
     args: ['test']
     dir: '.'
     id: 'run-maven-tests'
 
   # 2. Analyse SonarQube
   # Le compte de service Cloud Build doit avoir le rôle 'Secret Manager Secret Accessor' pour accéder aux secrets
-  - name: 'gcr.io/cloud-builders/mvn'
+  - name: 'maven:3.9.6-eclipse-temurin-21-alpine'
     args:
       - 'sonar:sonar'
       - '-Dsonar.projectKey=league-of-legends-api'
