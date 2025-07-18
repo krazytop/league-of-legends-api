@@ -29,11 +29,13 @@ steps:
       - '${_GAR_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_IMAGE_NAME}:${COMMIT_SHA}'
       - '.'
     dir: '.'
+    env: [ 'DOCKER_BUILDKIT=1' ]
     waitFor: ['run-sonarqube-analysis']
     id: 'build-docker-image'
 
   # 4. Push de l'image Docker vers Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
+    env: [ 'DOCKER_BUILDKIT=1' ]
     args:
       - 'push'
       - '${_GAR_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_IMAGE_NAME}:${COMMIT_SHA}'
@@ -42,7 +44,6 @@ steps:
 
   # 5. Déploiement sur Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
-    env: ['DOCKER_BUILDKIT=1']
     args:
       - 'run'
       - 'deploy'
