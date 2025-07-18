@@ -1,4 +1,12 @@
 steps:
+  - name: 'bash'
+    args:
+      - '-c'
+      - 'echo "La valeur de mon secret temporaire est : $$_TEMP_SECRET"'
+    secretEnv:
+      - '_TEMP_SECRET'
+    id: 'display-temp-secret'
+
   # 1. Exécution des tests Maven
   - name: 'maven:3.9.10-eclipse-temurin-21-alpine'
     entrypoint: 'mvn'
@@ -13,9 +21,9 @@ steps:
     args:
       - 'sonar:sonar'
       - '-Dsonar.projectKey=league-of-legends-api'
-      - '-Dsonar.organization=$${_SONAR_ORGANIZATION}'
-      - '-Dsonar.host.url=$${_SONAR_HOST_URL}'
-      - '-Dsonar.token=$${_SONAR_TOKEN}'
+      - '-Dsonar.organization=$$_SONAR_ORGANIZATION'
+      - '-Dsonar.host.url=$$_SONAR_HOST_URL'
+      - '-Dsonar.token=$$_SONAR_TOKEN'
     secretEnv:
       - '_SONAR_TOKEN'
       - '_SONAR_HOST_URL'
@@ -65,6 +73,8 @@ availableSecrets:
       versionName: projects/${PROJECT_ID}/secrets/sonar-host-url/versions/latest
     - env: _SONAR_ORGANIZATION
       versionName: projects/${PROJECT_ID}/secrets/sonar-organization/versions/latest
+    - env: _TEMP_SECRET
+      versionName: projects/${PROJECT_ID}/secrets/temp-secret/versions/latest
 
 substitutions:
   _GAR_LOCATION: europe-west9
