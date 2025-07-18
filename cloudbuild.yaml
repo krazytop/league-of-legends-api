@@ -13,9 +13,9 @@ steps:
     args:
       - 'sonar:sonar'
       - '-Dsonar.projectKey=league-of-legends-api'
-      - '-Dsonar.organization=$$_SONAR_ORGANIZATION'
-      - '-Dsonar.host.url=$$_SONAR_HOST_URL'
-      - '-Dsonar.token=$$_SONAR_TOKEN'
+      - '-Dsonar.organization=$${_SONAR_ORGANIZATION}'
+      - '-Dsonar.host.url=$${_SONAR_HOST_URL}'
+      - '-Dsonar.token=$${_SONAR_TOKEN}'
     secretEnv:
       - '_SONAR_TOKEN'
       - '_SONAR_HOST_URL'
