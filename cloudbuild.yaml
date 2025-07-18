@@ -19,9 +19,7 @@ steps:
       - '-Dsonar.sources=.'
     secretEnv:
       - '_SONAR_TOKEN'
-      - '_SONAR_HOST_URL'
-      - '_SONAR_ORGANIZATION'
-    waitFor: ['run-sonarqube-analysis-test']
+    waitFor: ['run-sonarqube-analysis']
     id: 'run-sonarqube-analysis'
 
   # 3. Construction de l’image Docker
@@ -62,10 +60,6 @@ availableSecrets:
   secretManager:
     - env: _SONAR_TOKEN
       versionName: projects/${PROJECT_ID}/secrets/sonar-token/versions/latest
-    - env: _SONAR_HOST_URL
-      versionName: projects/${PROJECT_ID}/secrets/sonar-host-url/versions/latest
-    - env: _SONAR_ORGANIZATION
-      versionName: projects/${PROJECT_ID}/secrets/sonar-organization/versions/latest
 
 substitutions:
   _GAR_LOCATION: europe-west9
