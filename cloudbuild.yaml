@@ -6,7 +6,6 @@ steps:
       - 'echo "DEBUG: Sonar Token Value: ${_SONAR_TOKEN}"' # Le token sera affiché ici
     secretEnv:
       - '_SONAR_TOKEN' # Injecte le secret dans cette étape
-    waitFor: [ 'run-maven-tests' ] # S'exécute après les tests Maven
     id: 'debug-sonar-token'
 
   # 1. Exécution des tests Maven
