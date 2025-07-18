@@ -19,7 +19,7 @@ steps:
       - '-Dsonar.sources=.'
     secretEnv:
       - '_SONAR_TOKEN'
-    waitFor: ['run-sonarqube-analysis']
+    waitFor: ['run-maven-tests']
     id: 'run-sonarqube-analysis'
 
   # 3. Construction de l’image Docker
