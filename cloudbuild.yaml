@@ -15,7 +15,7 @@ steps:
       - '-Dsonar.projectKey=${_SONAR_PROJECT_KEY}'
       - '-Dsonar.organization=${_SONAR_ORGANIZATION}'
       - '-Dsonar.host.url=${_SONAR_HOST_URL}'
-      - '-Dsonar.login=${_SONAR_TOKEN}'
+      - '-Dsonar.token=${_SONAR_TOKEN}'
       - '-Dsonar.sources=.'
     secretEnv:
       - '_SONAR_TOKEN'
