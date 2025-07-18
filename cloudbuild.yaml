@@ -6,6 +6,21 @@ steps:
     dir: '.'
     id: 'run-maven-tests'
 
+
+  # 2. Analyse SonarQube
+  - name: 'maven:3.9.10-eclipse-temurin-21-alpine'
+    entrypoint: 'mvn'
+    dir: '.'
+    args:
+      - 'sonar:sonar'
+      - '-Dsonar.projectKey=krazytop_league-of-legends-api'
+      - '-Dsonar.organization=krazytop'
+      - '-Dsonar.host.url=https://sonarcloud.io/'
+      - '-Dsonar.login=ca8126e4f21b4d2d77149c50968126f1496b2350'
+      - '-Dsonar.sources=.'
+    waitFor: [ 'run-maven-tests' ]
+    id: 'run-sonarqube-analysis-test'
+
   # 2. Analyse SonarQube
   - name: 'maven:3.9.10-eclipse-temurin-21-alpine'
     entrypoint: 'mvn'
