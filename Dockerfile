@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7
 # Stage 1: Build the application
 FROM maven:3.9.10-eclipse-temurin-21-alpine AS build
 
