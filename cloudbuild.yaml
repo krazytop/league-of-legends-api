@@ -12,7 +12,7 @@ steps:
     dir: '.'
     args:
       - 'sonar:sonar'
-      - '-Dsonar.projectKey=league-of-legends-api'
+      - '-Dsonar.projectKey=${_SONAR_PROJECT_KEY}'
       - '-Dsonar.organization=${_SONAR_ORGANIZATION}'
       - '-Dsonar.host.url=${_SONAR_HOST_URL}'
       - '-Dsonar.token=$$_SONAR_TOKEN'
@@ -74,3 +74,4 @@ substitutions:
   _CLOUD_RUN_REGION: europe-west9
   _SONAR_HOST_URL: https://sonarcloud.io/
   _SONAR_ORGANIZATION: krazytop
+  _SONAR_PROJECT_KEY: krazytop_league-of-legends-api
