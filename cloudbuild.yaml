@@ -1,13 +1,4 @@
 steps:
-  - name: 'bash'
-    args:
-      - '-c'
-      - 'echo "La valeur de mon secret temporaire est : $$_SONAR_ORGANIZATION - $$_SONAR_HOST_URL"'
-    secretEnv:
-      - '_SONAR_ORGANIZATION'
-      - '_SONAR_HOST_URL'
-    id: 'display-temp-secret'
-
   # 1. Exécution des tests Maven
   - name: 'maven:3.9.10-eclipse-temurin-21-alpine'
     entrypoint: 'mvn'
@@ -23,7 +14,7 @@ steps:
       - 'sonar:sonar'
       - '-Dsonar.projectKey=league-of-legends-api'
       - '-Dsonar.organization=$$_SONAR_ORGANIZATION'
-      - '-Dsonar.host.url=https://sonarcloud.io/'
+      - '-Dsonar.host.url=${_SONAR_HOST_URL}'
       - '-Dsonar.token=$$_SONAR_TOKEN'
     secretEnv:
       - '_SONAR_TOKEN'
@@ -81,3 +72,4 @@ substitutions:
   _IMAGE_NAME: league-of-legends-api
   _SERVICE_NAME: league-of-legends-api-service
   _CLOUD_RUN_REGION: europe-west9
+  _SONAR_HOST_URL: https://sonarcloud.io/
