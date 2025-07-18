@@ -36,7 +36,7 @@ steps:
       - '_SONAR_TOKEN'
       - '_SONAR_HOST_URL'
       - '_SONAR_ORGANIZATION'
-    waitFor: ['run-maven-tests']
+    waitFor: ['run-sonarqube-analysis-test']
     id: 'run-sonarqube-analysis'
 
   # 3. Construction de l’image Docker
