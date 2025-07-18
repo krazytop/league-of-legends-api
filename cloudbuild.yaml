@@ -64,7 +64,7 @@ availableSecrets:
 
 substitutions:
   _GAR_LOCATION: europe-west9
-  _REPOSITORY: eu.gcr.io
+  _REPOSITORY: containers
   _IMAGE_NAME: league-of-legends-api
   _SERVICE_NAME: league-of-legends-api-service
   _CLOUD_RUN_REGION: europe-west9
