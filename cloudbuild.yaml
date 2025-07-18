@@ -3,7 +3,7 @@ steps:
   - name: 'bash'
     args:
       - '-c'
-      - 'echo "DEBUG: Sonar Token Value: ${_SONAR_TOKEN}"' # Le token sera affiché ici
+      - 'echo "DEBUG: Sonar Token Value: $${_SONAR_TOKEN}"' # Le token sera affiché ici
     secretEnv:
       - '_SONAR_TOKEN' # Injecte le secret dans cette étape
     id: 'debug-sonar-token'
