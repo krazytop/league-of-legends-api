@@ -12,7 +12,7 @@ public enum QueueEnum {
     SOLO_RANKED("solo-ranked", List.of("4", "420")),
     FLEX_RANKED("flex-ranked", List.of("6", "42", "440")),
     ARAM("aram", List.of("65", "100", "450")),
-    URF("urf", List.of("76", "1900", "318", "1010")),
+    URF("urf", List.of("76", "1900", "318", "900", "1010")),
     NEXUS_BLITZ("nexus-blitz", List.of("1200", "1300")),
     ONE_FOR_ALL("one-for-all", List.of("70", "1020")),
     ULTIMATE_SPELLBOOK("ultimate-spellbook", List.of("1400")),
