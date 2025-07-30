@@ -55,14 +55,18 @@ public class PatchService {
         List<String> allPatchesVersion = getAllPatchesVersion();
         Metadata metadata = metadataService.getMetadata().orElse(new Metadata());
         for (String patchVersion : allPatchesVersion) {
+            boolean isNewVersion = false;
             for (String language : SUPPORTED_LANGUAGES) {
                 if (getPatch(removeFixVersion(patchVersion), language).isEmpty()) {
                     updatePatchData(patchVersion, language);
+                    isNewVersion = true;
                 }
             }
-            metadata.getAllPatches().add(removeFixVersion(patchVersion));
-            metadata.setCurrentSeason(patchNomenclatureRepository.findLatestPatch().getSeason());
-            metadataService.saveMetadata(metadata);
+            if (isNewVersion) {
+                metadata.getAllPatches().add(removeFixVersion(patchVersion));
+                metadata.setCurrentSeason(patchNomenclatureRepository.findLatestPatch().getSeason());
+                metadataService.saveMetadata(metadata);
+            }
         }
     }
 
