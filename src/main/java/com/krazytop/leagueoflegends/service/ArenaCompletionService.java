@@ -41,20 +41,18 @@ public class ArenaCompletionService {
     }
 
     public void updateArenaCompletion(String puuid, Match match) {
-        if (match.getDatetime().after(Date.from(LocalDateTime.of(2025, 1, 1, 0, 0).toInstant(ZoneOffset.UTC)))) {
-            match.getTeams().stream()
-                    .filter(team -> team.getPlacement() == 1)
-                    .flatMap(team -> team.getParticipants().stream())
-                    .filter(participant -> puuid.equals(participant.getSummoner().getPuuid()))
-                    .findFirst()
-                    .ifPresent(winningSummonerParticipant -> {
-                        createIfNeededSummonerArenaCompletion(puuid);
-                        ArenaCompletion arenaCompletion = getArenaCompletion(puuid);
-                        if (arenaCompletion.getChampions().add(winningSummonerParticipant.getChampion())) {
-                            arenaCompletionRepository.save(arenaCompletion);
-                        }
-                    });
-        }
+        match.getTeams().stream()
+                .filter(team -> team.getPlacement() == 1)
+                .flatMap(team -> team.getParticipants().stream())
+                .filter(participant -> puuid.equals(participant.getSummoner().getPuuid()))
+                .findFirst()
+                .ifPresent(winningSummonerParticipant -> {
+                    createIfNeededSummonerArenaCompletion(puuid);
+                    ArenaCompletion arenaCompletion = getArenaCompletion(puuid);
+                    if (arenaCompletion.getChampions().add(winningSummonerParticipant.getChampion())) {
+                        arenaCompletionRepository.save(arenaCompletion);
+                    }
+                });
     }
 
 }
