@@ -2,14 +2,13 @@ package com.krazytop.leagueoflegends.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krazytop.leagueoflegends.entity.Account;
-import com.krazytop.leagueoflegends.entity.ArenaCompletion;
 import com.krazytop.leagueoflegends.entity.Summoner;
 import com.krazytop.leagueoflegends.exception.ApiErrorEnum;
 import com.krazytop.leagueoflegends.exception.CustomException;
 import com.krazytop.leagueoflegends.mapper.SummonerMapper;
 import com.krazytop.leagueoflegends.model.generated.SummonerDTO;
 import com.krazytop.leagueoflegends.repository.SummonerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,21 +21,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class SummonerService {
 
     @Value("${league-of-legends.api-key:api-key}")
-    private String API_KEY;
+    private String apiKey;
     private final SummonerRepository summonerRepository;
     private final SummonerMapper summonerMapper;
     private final ArenaCompletionService arenaCompletionService;
-
-    @Autowired
-    public SummonerService(SummonerRepository summonerRepository, SummonerMapper summonerMapper, ArenaCompletionService arenaCompletionService) {
-        this.summonerRepository = summonerRepository;
-        this.summonerMapper = summonerMapper;
-        this.arenaCompletionService = arenaCompletionService;
-    }
 
     public Summoner getSummoner(String puuid) {
         return getLocalSummoner(puuid).orElse(getRemoteSummoner(puuid));
@@ -74,7 +67,7 @@ public class SummonerService {
         try {
             String region = getRegion(puuid);
             ObjectMapper mapper = new ObjectMapper();
-            String summonerApiUrl = String.format("https://%s.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/%s?api_key=%s", region, puuid, API_KEY);
+            String summonerApiUrl = String.format("https://%s.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/%s?api_key=%s", region, puuid, apiKey);
             Summoner summoner = mapper.convertValue(mapper.readTree(new URI(summonerApiUrl).toURL()), Summoner.class);
             Account account = getAccount(summoner.getPuuid());
             summoner.setName(account.getName());
@@ -92,7 +85,7 @@ public class SummonerService {
             ObjectMapper mapper = new ObjectMapper();
             Account account = getAccount(tag, name);
             String region = getRegion(account.getPuuid());
-            String summonerApiUrl = String.format("https://%s.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/%s?api_key=%s", region, account.getPuuid(), API_KEY);
+            String summonerApiUrl = String.format("https://%s.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/%s?api_key=%s", region, account.getPuuid(), apiKey);
             Summoner summoner = mapper.convertValue(mapper.readTree(new URI(summonerApiUrl).toURL()), Summoner.class);
             summoner.setRegion(region);
             summoner.setName(account.getName());
@@ -106,7 +99,7 @@ public class SummonerService {
     private Account getAccount(String puuid) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            String accountApiUrl = String.format("https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/%s?api_key=%s", puuid, API_KEY);
+            String accountApiUrl = String.format("https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/%s?api_key=%s", puuid, apiKey);
             return mapper.convertValue(mapper.readTree(new URI(accountApiUrl).toURL()), Account.class);
         } catch (URISyntaxException | IOException ex) {
             throw new CustomException(ApiErrorEnum.ACCOUNT_NOT_FOUND, ex);
@@ -116,7 +109,7 @@ public class SummonerService {
     private Account getAccount(String tag, String name) throws URISyntaxException, IOException {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            String accountApiUrl = String.format("https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s?api_key=%s", name, tag, API_KEY);
+            String accountApiUrl = String.format("https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s?api_key=%s", name, tag, apiKey);
             return mapper.convertValue(mapper.readTree(new URI(accountApiUrl).toURL()), Account.class);
         } catch (URISyntaxException | IOException ex) {
             throw new CustomException(ApiErrorEnum.ACCOUNT_NOT_FOUND, ex);

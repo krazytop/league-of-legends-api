@@ -10,7 +10,7 @@ import com.krazytop.leagueoflegends.exception.CustomException;
 import com.krazytop.leagueoflegends.mapper.MasteryMapper;
 import com.krazytop.leagueoflegends.model.generated.MasteriesDTO;
 import com.krazytop.leagueoflegends.repository.MasteryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class MasteryService {
 
@@ -27,14 +28,7 @@ public class MasteryService {
     private final MasteryMapper masteryMapper;
 
     @Value("${league-of-legends.api-key:api-key}")
-    private String API_KEY;
-
-    @Autowired
-    public MasteryService(MasteryRepository masteryRepository, SummonerService summonerService, MasteryMapper masteryMapper) {
-        this.masteryRepository = masteryRepository;
-        this.summonerService = summonerService;
-        this.masteryMapper = masteryMapper;
-    }
+    private String apiKey;
 
     public Masteries getMasteries(String puuid) {
         return masteryRepository.findByPuuid(puuid).orElseThrow(() -> new CustomException(ApiErrorEnum.SUMMONER_NEED_IMPORT_FIRST));
@@ -47,7 +41,7 @@ public class MasteryService {
     public void updateMasteries(String puuid) {
         try {
             String region = summonerService.getLocalSummoner(puuid).orElseThrow(() -> new CustomException(ApiErrorEnum.SUMMONER_NEED_IMPORT_FIRST)).getRegion();
-            String stringUrl = String.format("https://%s.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/%s?api_key=%s", region, puuid, API_KEY);
+            String stringUrl = String.format("https://%s.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/%s?api_key=%s", region, puuid, apiKey);
             ObjectMapper mapper = new ObjectMapper();
             List<JsonNode> nodes = mapper.convertValue(mapper.readTree(new URI(stringUrl).toURL()), new TypeReference<>() {});
             Masteries masteries = new Masteries(nodes.getFirst().get("puuid").asText());

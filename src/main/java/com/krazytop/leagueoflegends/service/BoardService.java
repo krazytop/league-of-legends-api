@@ -8,13 +8,14 @@ import com.krazytop.leagueoflegends.mapper.BoardMapper;
 import com.krazytop.leagueoflegends.model.generated.BoardDTO;
 import com.krazytop.leagueoflegends.model.generated.SummonerDTO;
 import com.krazytop.leagueoflegends.repository.BoardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+@AllArgsConstructor
 @Service
 public class BoardService {
 
@@ -24,16 +25,6 @@ public class BoardService {
     private final MasteryService masteryService;
     private final RankService rankService;
     private final BoardMapper boardMapper;
-
-    @Autowired
-    public BoardService(BoardRepository boardRepository, SummonerService summonerService, MatchService matchService, MasteryService masteryService, RankService rankService, BoardMapper boardMapper) {
-        this.boardRepository = boardRepository;
-        this.summonerService = summonerService;
-        this.matchService = matchService;
-        this.masteryService = masteryService;
-        this.rankService = rankService;
-        this.boardMapper = boardMapper;
-    }
 
     public BoardDTO getBoardDTO(String boardId) {
         return boardMapper.toDTO(getBoard(boardId));

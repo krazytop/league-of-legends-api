@@ -43,26 +43,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorDTO'
-  /patch:
-    post:
-      summary: Update all patches.
-      operationId: updateAllPatches
-      tags:
-        - Patch
-      responses:
-        '200':
-          description: All patches are up to date.
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "All patches are up to date"
-        '500':
-          description: Internal Server Error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorDTO'
   /patch/{patchId}:
     get:
       summary: Retrieve patch.

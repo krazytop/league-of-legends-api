@@ -11,9 +11,8 @@ import com.krazytop.leagueoflegends.model.generated.MatchDTO;
 import com.krazytop.leagueoflegends.nomenclature.QueueEnum;
 import com.krazytop.leagueoflegends.nomenclature.RoleEnum;
 import com.krazytop.leagueoflegends.repository.MatchRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -24,27 +23,19 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class MatchService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MatchService.class);
 
     @Value("${spring.data.web.pageable.default-page-size:5}")
     private int pageSize;
     @Value("${league-of-legends.api-key:api-key}")
-    private String API_KEY;
+    private String apiKey;
     private final MatchRepository matchRepository;
     private final SummonerService summonerService;
     private final MatchMapper matchMapper;
     private final ArenaCompletionService arenaCompletionService;
-
-    @Autowired
-    public MatchService(MatchRepository matchRepository, SummonerService summonerService, MatchMapper matchMapper, ArenaCompletionService arenaCompletionService) {
-        this.matchRepository = matchRepository;
-        this.summonerService = summonerService;
-        this.matchMapper = matchMapper;
-        this.arenaCompletionService = arenaCompletionService;
-    }
 
     public List<MatchDTO> getMatches(String puuid, Integer pageNb, String queue, String role) {
         return getMatches(puuid, pageNb, QueueEnum.fromName(queue), RoleEnum.fromName(role)).stream().map(matchMapper::toDTO).toList();
@@ -59,7 +50,7 @@ public class MatchService {
             boolean moreMatchToRecovered = true;
             int firstIndex = 0;
             while (moreMatchToRecovered) {// TODO faire un appel pour chaque region (europe, americas, asia, sea)
-                String url = String.format("https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=%d&count=%d&api_key=%s", puuid, firstIndex, 100, API_KEY);
+                String url = String.format("https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=%d&count=%d&api_key=%s", puuid, firstIndex, 100, apiKey);
                 ObjectMapper mapper = new ObjectMapper();
                 List<String> matchIds = mapper.convertValue(mapper.readTree(new URI(url).toURL()), new TypeReference<>() {});
                 if (matchIds.isEmpty()) moreMatchToRecovered = false;
@@ -67,7 +58,7 @@ public class MatchService {
                 for (String matchId : matchIds) {
                     Optional<Match> existingMatch = this.matchRepository.findFirstById(matchId);
                     if (existingMatch.isEmpty()) {
-                        String stringUrl = String.format("https://europe.api.riotgames.com/lol/match/v5/matches/%s?api_key=%s", matchId, API_KEY);
+                        String stringUrl = String.format("https://europe.api.riotgames.com/lol/match/v5/matches/%s?api_key=%s", matchId, apiKey);
                         JsonNode node = mapper.readTree(new URI(stringUrl).toURL());
                         Match match = mapper.convertValue(node.get("info"), Match.class);
                         if (!match.getParticipants().isEmpty()) {
@@ -81,7 +72,7 @@ public class MatchService {
                             }
                             saveMatch(match, puuid);
                         } else {
-                            LOGGER.warn("Match {} is broken", matchId);
+                            log.warn("Match {} is broken", matchId);
                         }
                         Thread.sleep(2000);
                     } else if (!existingMatch.get().getOwners().contains(puuid)) {
@@ -105,7 +96,7 @@ public class MatchService {
 
     private void saveMatch(Match match, String puuid) {
         match.getOwners().add(puuid);
-        LOGGER.info("Saving LOL match : {}", match.getId());
+        log.info("Saving LOL match : {}", match.getId());
         matchRepository.save(match);
         summonerService.updateSpentTimeAndPlayedSeasonsOrSets(puuid, match.getDuration(), Integer.valueOf(match.getVersion().replaceAll("\\..*", "")));
     }

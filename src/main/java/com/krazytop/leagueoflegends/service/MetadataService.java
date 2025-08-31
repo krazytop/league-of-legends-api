@@ -6,22 +6,17 @@ import com.krazytop.leagueoflegends.exception.CustomException;
 import com.krazytop.leagueoflegends.mapper.MetadataMapper;
 import com.krazytop.leagueoflegends.model.generated.MetadataDTO;
 import com.krazytop.leagueoflegends.repository.MetadataRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class MetadataService {
 
     private final MetadataRepository metadataRepository;
     private final MetadataMapper metadataMapper;
-
-    @Autowired
-    public MetadataService(MetadataRepository metadataRepository, MetadataMapper  metadataMapper) {
-        this.metadataRepository = metadataRepository;
-        this.metadataMapper = metadataMapper;
-    }
 
     public MetadataDTO getMetadataDTO() {
         return getMetadata()
@@ -31,10 +26,6 @@ public class MetadataService {
 
     public Optional<Metadata> getMetadata() {
         return metadataRepository.findAll().stream().findFirst();
-    }
-
-    public void saveMetadata(Metadata metadata) {
-        metadataRepository.save(metadata);
     }
 
 }
