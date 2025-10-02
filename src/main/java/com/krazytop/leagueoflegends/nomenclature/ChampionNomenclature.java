@@ -17,7 +17,7 @@ import java.util.Map;
 public class ChampionNomenclature extends Nomenclature {
 
     private String title;
-    private Map<String, Integer> stats;
+    private Map<String, Float> stats;
     private List<String> tags;
 
     @JsonProperty("key")

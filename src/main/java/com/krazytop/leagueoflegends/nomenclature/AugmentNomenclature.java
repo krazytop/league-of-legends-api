@@ -15,7 +15,7 @@ import java.util.Map;
 @Document(collection = "AugmentNomenclature")
 public class AugmentNomenclature extends Nomenclature {
 
-    private Map<String, Integer> dataValues;
+    private Map<String, Float> dataValues;
 
     @JsonProperty("iconLarge")
     private void unpackIconLarge(JsonNode node) {

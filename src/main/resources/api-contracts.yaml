@@ -809,8 +809,8 @@ components:
           type: object
           description: A map of champion stats to their numerical values.
           additionalProperties:
-            type: integer
-            format: int32
+            type: number
+            format: float
           example:
             hp: 650
             ad: 60
@@ -852,7 +852,7 @@ components:
           description: A map of item stats to their numerical values.
           additionalProperties:
             type: number
-            format: double
+            format: float
           example:
             FlatMovementSpeedMod: 25.0
             FlatHPPoolMod: 0.0
@@ -893,8 +893,8 @@ components:
           type: object
           description: A map of key-value pairs representing various numerical data points associated with the augment.
           additionalProperties:
-            type: integer
-            format: int32
+            type: number
+            format: float
           example:
             BonusDamagePercent: 10
             HealthThreshold: 500
@@ -1436,7 +1436,7 @@ components:
           description: Represents the style id of the style category.
           example: "Précision"
           additionalProperties:
-            type: integer
+            type: string
         runeCategories:
           type: array
           description: Represents all selected runes categories.
