@@ -8,5 +8,5 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = DateMapper.class)
 public interface BoardMapper {
 
-    BoardDTO toDTO(Board board);
+    BoardDTO toDTO(Board model);
 }

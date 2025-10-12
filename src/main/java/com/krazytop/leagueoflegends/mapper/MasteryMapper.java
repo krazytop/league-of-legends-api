@@ -8,5 +8,5 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = DateMapper.class)
 public interface MasteryMapper {
 
-    MasteriesDTO toDTO(Masteries board);
+    MasteriesDTO toDTO(Masteries model);
 }

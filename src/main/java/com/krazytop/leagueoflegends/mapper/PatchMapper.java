@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PatchMapper {
 
-    PatchDTO toDTO(Patch patch);
-    List<RunePerkNomenclatureDTO> toDTOList(List<RunePerkNomenclature> perkList);
-    List<List<RunePerkNomenclatureDTO>> toDTOListOfLists(List<List<RunePerkNomenclature>> perkList);
+    PatchDTO toDTO(Patch model);
+    List<RunePerkNomenclatureDTO> toDTOList(List<RunePerkNomenclature> models);
+    List<List<RunePerkNomenclatureDTO>> toDTOListOfLists(List<List<RunePerkNomenclature>> models);
 }

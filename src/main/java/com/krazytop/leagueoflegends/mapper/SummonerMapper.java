@@ -8,5 +8,5 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = DateMapper.class)
 public interface SummonerMapper {
 
-    SummonerDTO toDTO(Summoner summoner);
+    SummonerDTO toDTO(Summoner model);
 }

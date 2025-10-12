@@ -8,5 +8,5 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = DateMapper.class)
 public interface RankMapper {
 
-    RankDTO toDTO(Rank rank);
+    RankDTO toDTO(Rank model);
 }

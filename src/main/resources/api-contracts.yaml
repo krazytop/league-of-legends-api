@@ -311,6 +311,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorDTO'
+  /match:
+    post:
+      summary: Retrieve summoner matches.
+      operationId: getMatches
+      tags:
+        - Match
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PageableRequestMatchDTO"
+      responses:
+        '200':
+          description: Matches successfully retrieved.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PageableResponseMatchDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDTO'
   /match/{puuid}/{pageNb}/{queue}/{role}:
     parameters:
       - in: path
@@ -340,7 +367,7 @@ paths:
         description: The requested role.
     get:
       summary: Retrieve all summoner matches of the requested page.
-      operationId: getMatches
+      operationId: getMatchesOLD
       tags:
         - Match
       responses:
@@ -1461,3 +1488,66 @@ components:
       required:
         - style
         - perks
+    PageableRequestDTO:
+      type: object
+      description: Base of pageable requests.
+      properties:
+        page:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+    PageableResponseDTO:
+      type: object
+      description: Base of pageable responses.
+      allOf:
+        - $ref: "#/components/schemas/PageableRequestDTO"
+        - type: object
+          properties:
+            totalPages:
+              type: integer
+              format: int32
+            totalElements:
+              type: integer
+              format: int64
+            page:
+              type: integer
+              format: int32
+            size:
+              type: integer
+              format: int32
+    PageableResponseMatchDTO:
+      type: object
+      description: Match pageable search response.
+      allOf:
+        - $ref: "#/components/schemas/PageableResponseDTO"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: "#/components/schemas/MatchDTO"
+    PageableRequestMatchDTO:
+      type: object
+      description: Match pageable search request.
+      allOf:
+        - $ref: "#/components/schemas/PageableRequestDTO"
+        - type: object
+          properties:
+            filters:
+              $ref: "#/components/schemas/PageableRequestFilterMatchDTO"
+    PageableRequestFilterMatchDTO:
+      type: object
+      description: Match pageable search request filters.
+      properties:
+        puuid:
+          type: string
+          description: The puuid of the summoner.
+        queue:
+          type: string
+          description: The requested queue.
+        role:
+          type: string
+          description: The requested role.
+

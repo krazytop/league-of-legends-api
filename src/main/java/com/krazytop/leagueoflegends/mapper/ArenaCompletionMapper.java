@@ -8,5 +8,5 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ArenaCompletionMapper {
 
-    ArenaCompletionDTO toDTO(ArenaCompletion arenaCompletion);
+    ArenaCompletionDTO toDTO(ArenaCompletion model);
 }

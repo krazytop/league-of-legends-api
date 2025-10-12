@@ -7,6 +7,8 @@ import com.krazytop.leagueoflegends.entity.Match;
 import com.krazytop.leagueoflegends.exception.ApiErrorEnum;
 import com.krazytop.leagueoflegends.exception.CustomException;
 import com.krazytop.leagueoflegends.mapper.MatchMapper;
+import com.krazytop.leagueoflegends.model.MatchFilters;
+import com.krazytop.leagueoflegends.model.PageFilteredRequest;
 import com.krazytop.leagueoflegends.model.generated.MatchDTO;
 import com.krazytop.leagueoflegends.nomenclature.QueueEnum;
 import com.krazytop.leagueoflegends.nomenclature.RoleEnum;
@@ -14,6 +16,7 @@ import com.krazytop.leagueoflegends.repository.MatchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +40,11 @@ public class MatchService {
     private final MatchMapper matchMapper;
     private final ArenaCompletionService arenaCompletionService;
 
-    public List<MatchDTO> getMatches(String puuid, Integer pageNb, String queue, String role) {
+    public Page<Match> getMatches(PageFilteredRequest<MatchFilters> pageFilteredRequest) {
+        return null;
+    }
+
+    public List<MatchDTO> getMatchesOLD(String puuid, Integer pageNb, String queue, String role) {
         return getMatches(puuid, pageNb, QueueEnum.fromName(queue), RoleEnum.fromName(role)).stream().map(matchMapper::toDTO).toList();
     }
 

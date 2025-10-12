@@ -1,39 +1,48 @@
 package com.krazytop.leagueoflegends.controller;
 
 import com.krazytop.leagueoflegends.api.generated.MatchApi;
+import com.krazytop.leagueoflegends.mapper.MatchMapper;
 import com.krazytop.leagueoflegends.model.generated.MatchDTO;
+import com.krazytop.leagueoflegends.model.generated.PageableRequestMatchDTO;
+import com.krazytop.leagueoflegends.model.generated.PageableResponseMatchDTO;
 import com.krazytop.leagueoflegends.service.MatchService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Slf4j
+@AllArgsConstructor
 @RestController
 public class MatchController implements MatchApi {
 
-    private final MatchService matchService;
-
-    @Autowired
-    public MatchController(MatchService matchService){
-        this.matchService = matchService;
-    }
+    private final MatchService service;
+    private final MatchMapper mapper;
 
     @Override
-    public ResponseEntity<List<MatchDTO>> getMatches(String puuid, Integer pageNb, String queue, String role) {
+    public ResponseEntity<List<MatchDTO>> getMatchesOLD(String puuid, Integer pageNb, String queue, String role) {
         log.info("Retrieving matches");
-        List<MatchDTO> matches = matchService.getMatches(puuid, pageNb, queue, role);
+        List<MatchDTO> matches = service.getMatchesOLD(puuid, pageNb, queue, role);
         log.info("Matches retrieved");
         return new ResponseEntity<>(matches, HttpStatus.OK);
     }
 
     @Override
+    public ResponseEntity<List<PageableResponseMatchDTO>> getMatches(@RequestBody PageableRequestMatchDTO body) {
+        /**log.info("Retrieving matches");
+        List<MatchDTO> matches = service.getMatches(mapper.);
+        log.info("Matches retrieved");
+        return new ResponseEntity<>(matches, HttpStatus.OK);**/return null;
+    }
+
+    @Override
     public ResponseEntity<Integer> getMatchesCount(String puuid, String queue, String role) {
         log.info("Retrieving matches count");
-        Integer matches = matchService.getMatchesCount(puuid, queue, role);
+        Integer matches = service.getMatchesCount(puuid, queue, role);
         log.info("Matches count retrieved");
         return new ResponseEntity<>(matches, HttpStatus.OK);
     }
@@ -41,7 +50,7 @@ public class MatchController implements MatchApi {
     @Override
     public ResponseEntity<Void> updateMatches(String puuid) {
         log.info("Updating matches");
-        matchService.updateMatches(puuid);
+        service.updateMatches(puuid);
         log.info("Matches updated");
         return new ResponseEntity<>(HttpStatus.OK);
     }

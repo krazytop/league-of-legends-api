@@ -10,5 +10,5 @@ import org.mapstruct.MappingConstants;
 public interface MetadataMapper {
 
     @Mapping(source = "currentSeason", target = "currentSeasonOrSet")
-    MetadataDTO toDTO(Metadata metadata);
+    MetadataDTO toDTO(Metadata model);
 }

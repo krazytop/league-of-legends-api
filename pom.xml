@@ -150,6 +150,7 @@
                         <generateApiTests>false</generateApiTests>
                         <generateApiDocumentation>false</generateApiDocumentation>
                         <generateSupportingFiles>false</generateSupportingFiles>
+                        <openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>
                         <configOptions>
                             <sourceFolder>src/main/java</sourceFolder>
                             <dateLibrary>java8</dateLibrary>
