@@ -4,22 +4,18 @@ import com.krazytop.leagueoflegends.api.generated.BoardApi;
 import com.krazytop.leagueoflegends.model.generated.BoardDTO;
 import com.krazytop.leagueoflegends.model.generated.SummonerDTO;
 import com.krazytop.leagueoflegends.service.BoardService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@AllArgsConstructor
 @RestController
 public class BoardController implements BoardApi {
 
     private final BoardService boardService;
-
-    @Autowired
-    public BoardController(BoardService boardService) {
-        this.boardService = boardService;
-    }
 
     @Override
     public ResponseEntity<BoardDTO> getBoard(String boardId) {

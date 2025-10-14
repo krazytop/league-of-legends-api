@@ -11,12 +11,6 @@ import java.util.List;
 @Document(collection = "Patch")
 public class Patch {
 
-    public Patch(String patchId, String language) {
-        this.id = patchId + "_" + language;
-        this.patchId = patchId;
-        this.language = language;
-    }
-
     private String id;
     private String patchId;
     private String language;
