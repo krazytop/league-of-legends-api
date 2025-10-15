@@ -48,11 +48,16 @@ public class SummonerService {
     }
 
     public SummonerDTO updateSummoner(String puuid) {
+        Summoner newSummoner = getRemoteSummoner(puuid);
         arenaCompletionService.createIfNeededSummonerArenaCompletion(puuid);
-        Summoner summoner = getRemoteSummoner(puuid);
-        summoner.setUpdateDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        summonerRepository.save(summoner);
-        return summonerMapper.toDTO(summoner);
+        Optional<Summoner> oldSummoner = getLocalSummoner(puuid);
+        if (oldSummoner.isPresent()) {
+            newSummoner.setSpentTime(oldSummoner.get().getSpentTime());
+            newSummoner.setPlayedSeasonsOrSets(oldSummoner.get().getPlayedSeasonsOrSets());
+        }
+        newSummoner.setUpdateDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        summonerRepository.save(newSummoner);
+        return summonerMapper.toDTO(newSummoner);
     }
 
     public Optional<Summoner> getLocalSummoner(String puuid) {
