@@ -893,11 +893,13 @@ components:
           type: object
           description: A map of key-value pairs representing various numerical data points associated with the augment.
           additionalProperties:
-            type: number
-            format: float
+            type: array
+            items:
+              type: number
+              format: float
           example:
-            BonusDamagePercent: 10
-            HealthThreshold: 500
+            BonusDamagePercent: [10]
+            HealthThreshold: [500]
     RunePerkNomenclatureDTO:
       type: object
       description: Represents a specific rune perk.
