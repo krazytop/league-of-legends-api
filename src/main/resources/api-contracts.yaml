@@ -559,7 +559,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorDTO'
-  /board/{boardId}/add/{name}:
+  /board/{boardId}/add/{tag}/{name}:
     parameters:
       - in: path
         name: boardId
