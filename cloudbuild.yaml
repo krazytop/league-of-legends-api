@@ -4,14 +4,20 @@ steps:
     entrypoint: 'mvn'
     args: ['test']
     dir: '.'
+    volumes:
+      - name: 'maven-repo'
+        path: '/root/.m2'
     id: 'run-maven-tests'
 
   # 2. Analyse SonarQube
   - name: 'maven:3.9.10-eclipse-temurin-21-alpine'
     entrypoint: 'mvn'
     dir: '.'
+    volumes:
+      - name: 'maven-repo'
+        path: '/root/.m2'
     args:
-      - 'sonar:sonar'
+      - 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
       - '-Dsonar.projectKey=${_SONAR_PROJECT_KEY}'
       - '-Dsonar.organization=${_SONAR_ORGANIZATION}'
       - '-Dsonar.host.url=${_SONAR_HOST_URL}'
