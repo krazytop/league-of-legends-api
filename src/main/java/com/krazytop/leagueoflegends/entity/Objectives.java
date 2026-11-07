@@ -17,6 +17,7 @@ public class Objectives {
     private Integer riftHeraldKills;
     private Integer towerKills;
     private Integer atakhanKills;
+    private Integer voidGatorKills;
 
     private void getKills(JsonNode node, IntConsumer setter) {
         setter.accept(node.get("kills").asInt());
@@ -60,5 +61,10 @@ public class Objectives {
     @JsonProperty("tower")
     private void unpackTower(JsonNode node) {
         this.getKills(node, this::setTowerKills);
+    }
+
+    @JsonProperty("voidGator")
+    private void unpackVoidGator(JsonNode node) {
+        this.getKills(node, this::setVoidGatorKills);
     }
 }
