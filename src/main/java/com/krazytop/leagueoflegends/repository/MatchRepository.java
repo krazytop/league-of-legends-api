@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface MatchRepository extends MongoRepository<Match, String> {
+public interface MatchRepository extends MongoRepository<Match, String>, MatchRepositoryCustom {
 
     @Query(value = "{'owners': ?0}", sort = "{'datetime': -1}")
     Page<Match> findAll(String puuid, PageRequest pageRequest);

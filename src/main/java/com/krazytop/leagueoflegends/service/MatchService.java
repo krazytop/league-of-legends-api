@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krazytop.leagueoflegends.entity.Match;
+import com.krazytop.leagueoflegends.entity.MatchSearchCriteria;
+import com.krazytop.leagueoflegends.entity.PageableSearchCriteria;
 import com.krazytop.leagueoflegends.exception.ApiErrorEnum;
 import com.krazytop.leagueoflegends.exception.CustomException;
 import com.krazytop.leagueoflegends.mapper.MatchMapper;
@@ -14,6 +16,7 @@ import com.krazytop.leagueoflegends.repository.MatchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -132,6 +135,10 @@ public class MatchService {
                 return this.matchRepository.countAllByQueueAndByRole(puuid, queue.getIds(), role.getRiotName());
             }
         }
+    }
+
+    public Page<Match> getMatches(PageableSearchCriteria<MatchSearchCriteria> pageableSearchCriteria) {
+        return matchRepository.findAll(pageableSearchCriteria);
     }
 
 }

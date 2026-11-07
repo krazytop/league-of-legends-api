@@ -311,6 +311,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorDTO'
+  /match:
+    post:
+      summary: Paginated search of matches
+      description: Allows filtering matches by PUUID, Queues and Roles with pagination.
+      operationId: getMatches
+      tags:
+        - Match
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchSearchRequestDTO'
+      responses:
+        '200':
+          description: Page de matches trouvée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchSearchResponseDTO'
   /match/{puuid}/{pageNb}/{queue}/{role}:
     parameters:
       - in: path
@@ -340,7 +360,7 @@ paths:
         description: The requested role.
     get:
       summary: Retrieve all summoner matches of the requested page.
-      operationId: getMatches
+      operationId: getMatchess
       tags:
         - Match
       responses:
@@ -658,6 +678,24 @@ components:
                 description: A specific issue with the field.
                 example: "must respect the format"
           description: A list of specific validation errors.
+    PageableRequestDTO:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+    PageableResponseDTO:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
     MetadataDTO:
       type: object
       description: Entity representing current game season, patch, and historical patch information.
@@ -1463,3 +1501,32 @@ components:
       required:
         - style
         - perks
+    MatchSearchCriteriaDTO:
+      type: object
+      required:
+        - puuid
+      properties:
+        puuid:
+          type: string
+        queue:
+          type: string
+        role:
+          type: string
+    MatchSearchRequestDTO:
+      type: object
+      description: Search criteria for paginated match search.
+      properties:
+        criteria:
+          $ref: '#/components/schemas/MatchSearchCriteriaDTO'
+      allOf:
+        - $ref: '#/components/schemas/PageableRequestDTO'
+    MatchSearchResponseDTO:
+      type: object
+      description: Paged response of retrieved matches.
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchDTO'
+      allOf:
+        - $ref: '#/components/schemas/PageableResponseDTO'
