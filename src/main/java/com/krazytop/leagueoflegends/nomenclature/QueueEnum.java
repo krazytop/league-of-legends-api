@@ -16,7 +16,7 @@ public enum QueueEnum {
     NEXUS_BLITZ("nexus-blitz", List.of("1200", "1300")),
     ONE_FOR_ALL("one-for-all", List.of("70", "1020")),
     ULTIMATE_SPELLBOOK("ultimate-spellbook", List.of("1400")),
-    ARENA("arena", List.of("1700", "1710")),
+    ARENA("arena", List.of("1700", "1710", "1750")),
     ALL_QUEUES("all-queues", List.of());
 
     private final String name;
