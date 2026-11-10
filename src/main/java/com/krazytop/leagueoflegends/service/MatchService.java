@@ -54,7 +54,6 @@ public class MatchService {
                 ObjectMapper mapper = new ObjectMapper();
                 List<String> matchIds = mapper.convertValue(mapper.readTree(new URI(url).toURL()), new TypeReference<>() {});
                 if (matchIds.isEmpty()) moreMatchToRecovered = false;
-                matchIds.add("EUW1_7458650511");
                 for (String matchId : matchIds) {
                     Optional<Match> existingMatch = this.matchRepository.findFirstById(matchId);
                     if (existingMatch.isEmpty()) {
