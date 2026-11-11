@@ -105,6 +105,7 @@ public class MatchService {
         Match match = new ObjectMapper().convertValue(node.get("info"), Match.class);
         if (!match.getParticipants().isEmpty()) {
             match.setId(node.get("metadata").get("matchId").asText());
+            match.setOwners(failedMatch.getOwners());
             if (QueueEnum.ARENA.getIds().contains(match.getQueue())) {
                 match.dispatchParticipantsInTeamsArena();
                 failedMatch.getOwners().forEach(puuid ->
