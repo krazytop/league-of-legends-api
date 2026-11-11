@@ -3,6 +3,7 @@ package com.krazytop.leagueoflegends.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.krazytop.leagueoflegends.entity.FailedMatch;
 import com.krazytop.leagueoflegends.entity.Match;
 import com.krazytop.leagueoflegends.exception.ApiErrorEnum;
 import com.krazytop.leagueoflegends.exception.CustomException;
@@ -10,6 +11,7 @@ import com.krazytop.leagueoflegends.mapper.MatchMapper;
 import com.krazytop.leagueoflegends.model.generated.MatchDTO;
 import com.krazytop.leagueoflegends.nomenclature.QueueEnum;
 import com.krazytop.leagueoflegends.nomenclature.RoleEnum;
+import com.krazytop.leagueoflegends.repository.FailedMatchRepository;
 import com.krazytop.leagueoflegends.repository.MatchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +20,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +37,7 @@ public class MatchService {
     @Value("${league-of-legends.api-key:api-key}")
     private String apiKey;
     private final MatchRepository matchRepository;
+    private final FailedMatchRepository failedMatchRepository;
     private final SummonerService summonerService;
     private final MatchMapper matchMapper;
     private final ArenaCompletionService arenaCompletionService;
@@ -46,6 +51,7 @@ public class MatchService {
     }
 
     public void updateMatches(String puuid) {
+        checkFailedMatches();
         try {
             boolean moreMatchToRecovered = true;
             int firstIndex = 0;
@@ -93,6 +99,31 @@ public class MatchService {
         }
     }
 
+    private void repaireMatch(FailedMatch failedMatch) throws URISyntaxException, IOException {
+        String stringUrl = String.format("https://europe.api.riotgames.com/lol/match/v5/matches/%s?api_key=%s", failedMatch.getId(), apiKey);
+        JsonNode node = new ObjectMapper().readTree(new URI(stringUrl).toURL());
+        Match match = new ObjectMapper().convertValue(node.get("info"), Match.class);
+        if (!match.getParticipants().isEmpty()) {
+            match.setId(node.get("metadata").get("matchId").asText());
+            if (QueueEnum.ARENA.getIds().contains(match.getQueue())) {
+                match.dispatchParticipantsInTeamsArena();
+                failedMatch.getOwners().forEach(puuid ->
+                        arenaCompletionService.updateArenaCompletion(puuid, match));
+            } else {
+                match.dispatchParticipantsInTeamsNormalGame();
+                match.setRemake(match.getTeams().getFirst().getParticipants().getFirst().getGameEndedInEarlySurrender());
+            }
+
+            log.info("Saving LOL match : {}", match.getId());
+            matchRepository.save(match);
+            failedMatch.getOwners().forEach(puuid ->
+                    summonerService.updateSpentTimeAndPlayedSeasonsOrSets(puuid, match.getDuration(), Integer.valueOf(match.getVersion().replaceAll("\\..*", ""))));
+            failedMatchRepository.delete(failedMatch);
+        } else {
+            throw new IOException("Match " + match.getId() + " is still broken");
+        }
+    }
+
     private void saveMatch(Match match, String puuid) {
         match.getOwners().add(puuid);
         log.info("Saving LOL match : {}", match.getId());
@@ -131,6 +162,17 @@ public class MatchService {
                 return this.matchRepository.countAllByQueueAndByRole(puuid, queue.getIds(), role.getRiotName());
             }
         }
+    }
+
+    private void checkFailedMatches() {
+        List<FailedMatch> failedMatches = failedMatchRepository.findAll();
+        failedMatches.forEach(failedMatch -> {
+            try {
+                repaireMatch(failedMatch);
+            } catch (Exception ex) {
+                log.error("Match {} is still broken", failedMatch.getId());
+            }
+        });
     }
 
 }
