@@ -6,7 +6,6 @@ import com.krazytop.leagueoflegends.infrastructure.adapter.in.rest.mapper.Master
 import com.krazytop.leagueoflegends.model.generated.MasteryDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,13 +25,13 @@ public class MasteryController implements MasteryApi {
         List<MasteryDTO> masteries = service.getMasteries(puuid).stream()
                 .map(mapper::toDTO)
                 .toList();
-        return new ResponseEntity<>(masteries, HttpStatus.OK);
+        return ResponseEntity.ok(masteries);
     }
 
     @Override
     public ResponseEntity<Void> updateMasteries(String puuid) {
         log.info("Mise à jour des maîtrises de champions pour le puuid {}", puuid);
         service.updateMasteries(puuid);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 }

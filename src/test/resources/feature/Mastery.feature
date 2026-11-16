@@ -118,7 +118,7 @@ Fonctionnalité: Gestion des maîtrises de champions
     """
     Quand j'appelle PUT "/mastery/puuid-1234"
     Alors le statut HTTP est 200
-    Et la collection "Mastery" contient uniquement le document suivant:
+    Et la collection "Mastery" contient uniquement le document suivant :
       """json
       {
       "puuid": "puuid-1234",
@@ -193,7 +193,7 @@ Fonctionnalité: Gestion des maîtrises de champions
     """
     Quand j'appelle PUT "/mastery/puuid-1234"
     Alors le statut HTTP est 200
-    Et la collection "Mastery" contient uniquement le document suivant:
+    Et la collection "Mastery" contient uniquement le document suivant :
       """json
       {
       "puuid": "puuid-1234",

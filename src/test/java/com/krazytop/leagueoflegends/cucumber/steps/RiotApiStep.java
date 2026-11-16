@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.krazytop.leagueoflegends.cucumber.LeagueOfLegendsIT;
 import io.cucumber.java.fr.Etantdonnéque;
 import no.stelar7.api.r4j.pojo.lol.championmastery.ChampionMastery;
+import no.stelar7.api.r4j.pojo.lol.league.LeagueEntry;
 
 import java.util.List;
 
@@ -17,13 +18,25 @@ public class RiotApiStep extends LeagueOfLegendsIT {
     public void mockRiotMasteries(String puuid, String jsonPayload) throws Exception {
         List<ChampionMastery> r4jMasteries = objectMapper.readValue(
                 jsonPayload,
-                new TypeReference<>() {
-                }
+                new TypeReference<>() {}
         );
 
         when(r4j.getLoLAPI()
                 .getMasteryAPI()
                 .getChampionMasteries(any(), eq(puuid)))
                 .thenReturn(r4jMasteries);
+    }
+
+    @Etantdonnéque("l'API Riot renvoie les classements suivants pour le puuid {string} :")
+    public void mockRiotRanks(String puuid, String jsonPayload) throws Exception {
+        List<LeagueEntry> r4jLeagueEntries = objectMapper.readValue(
+                jsonPayload,
+                new TypeReference<>() {}
+        );
+
+        when(r4j.getLoLAPI()
+                .getLeagueAPI()
+                .getLeagueEntriesByPUUID(any(), eq(puuid)))
+                .thenReturn(r4jLeagueEntries);
     }
 }

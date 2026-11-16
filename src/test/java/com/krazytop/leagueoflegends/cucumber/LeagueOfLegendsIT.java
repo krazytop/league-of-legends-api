@@ -1,6 +1,7 @@
 package com.krazytop.leagueoflegends.cucumber;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.krazytop.leagueoflegends.cucumber.config.CucumberContext;
 import com.krazytop.leagueoflegends.cucumber.config.MongoCollectionRegistry;
 import io.cucumber.spring.CucumberContextConfiguration;
 import no.stelar7.api.r4j.impl.R4J;
@@ -39,6 +40,9 @@ public class LeagueOfLegendsIT {
 
     @Autowired
     protected MongoCollectionRegistry collectionRegistry;
+
+    @Autowired
+    protected CucumberContext cucumberContext;
 
     @Autowired
     @MockitoBean(answers = Answers.RETURNS_DEEP_STUBS)

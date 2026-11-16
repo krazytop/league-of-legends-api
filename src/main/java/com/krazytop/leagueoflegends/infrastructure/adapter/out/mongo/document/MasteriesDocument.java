@@ -19,4 +19,3 @@ public class MasteriesDocument {
     private String puuid;
     private List<MasterySubdocument> champions = new ArrayList<>();
 }
-
