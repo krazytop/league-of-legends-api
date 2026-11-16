@@ -1,5 +1,6 @@
 package com.krazytop.leagueoflegends.service;
 
+import com.krazytop.leagueoflegends.domain.service.MasteryService;
 import com.krazytop.leagueoflegends.entity.Board;
 import com.krazytop.leagueoflegends.entity.Summoner;
 import com.krazytop.leagueoflegends.exception.ApiErrorEnum;

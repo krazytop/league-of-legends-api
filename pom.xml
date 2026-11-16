@@ -32,10 +32,18 @@
         <openapi-generator.version>7.13.0</openapi-generator.version>
         <jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <cucumber.version>7.20.1</cucumber.version>
 
         <sonar.organization>krazytop</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -102,6 +110,44 @@
             <artifactId>mapstruct</artifactId>
             <version>1.6.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.stelar7</groupId>
+            <artifactId>R4J</artifactId>
+            <version>master-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mongodb</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -132,47 +178,54 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>${openapi-generator.version}</version> <executions>
-                <execution>
-                    <id>generate-api</id>
-                    <goals>
-                        <goal>generate</goal>
-                    </goals>
-                    <configuration>
-                        <inputSpec>${project.basedir}/src/main/resources/api-contracts.yaml</inputSpec>
-                        <generatorName>spring</generatorName>
-                        <library>spring-boot</library>
-                        <output>${project.build.directory}/generated-sources/openapi</output>
-                        <apiPackage>com.krazytop.leagueoflegends.api.generated</apiPackage>
-                        <modelPackage>com.krazytop.leagueoflegends.model.generated</modelPackage>
-                        <generateModelTests>false</generateModelTests>
-                        <generateModelDocumentation>false</generateModelDocumentation>
-                        <generateApiTests>false</generateApiTests>
-                        <generateApiDocumentation>false</generateApiDocumentation>
-                        <generateSupportingFiles>false</generateSupportingFiles>
-                        <configOptions>
-                            <sourceFolder>src/main/java</sourceFolder>
-                            <dateLibrary>java8</dateLibrary>
-                            <useJakartaEe>true</useJakartaEe>
-                            <interfaceOnly>true</interfaceOnly>
-                            <useSpringfox>false</useSpringfox>
-                            <booleanGetterPrefix>is</booleanGetterPrefix>
-                            <useTags>true</useTags>
-                            <skipDefaultInterface>true</skipDefaultInterface>
-                            <hideGenerationTimestamp>true</hideGenerationTimestamp>
-                            <additionalModelTypeAnnotations>
-                                @lombok.AllArgsConstructor
-                                @lombok.NoArgsConstructor
-                                @lombok.Data
-                                @lombok.experimental.Accessors(chain = true)
-                            </additionalModelTypeAnnotations>
-                            <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
-                            <useBeanValidation>true</useBeanValidation>
-                            <performBeanValidation>true</performBeanValidation>
-                        </configOptions>
-                    </configuration>
-                </execution>
-            </executions>
+                <version>${openapi-generator.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/league-of-legends-api.yaml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <library>spring-boot</library>
+                            <output>${project.build.directory}/generated-sources/openapi</output>
+                            <apiPackage>com.krazytop.leagueoflegends.api.generated</apiPackage>
+                            <modelPackage>com.krazytop.leagueoflegends.model.generated</modelPackage>
+                            <generateModelTests>false</generateModelTests>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                            <generateApiTests>false</generateApiTests>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <typeMappings>
+                                <typeMapping>DateTime=java.time.Instant</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>java.time.Instant=java.time.Instant</importMapping>
+                            </importMappings>
+                            <configOptions>
+                                <sourceFolder>src/main/java</sourceFolder>
+                                <dateLibrary>java8</dateLibrary>
+                                <useJakartaEe>true</useJakartaEe>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useSpringfox>false</useSpringfox>
+                                <booleanGetterPrefix>is</booleanGetterPrefix>
+                                <useTags>true</useTags>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                <additionalModelTypeAnnotations>
+                                    @lombok.AllArgsConstructor
+                                    @lombok.NoArgsConstructor
+                                    @lombok.Data
+                                    @lombok.experimental.Accessors(chain = true)
+                                </additionalModelTypeAnnotations>
+                                <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+                                <useBeanValidation>true</useBeanValidation>
+                                <performBeanValidation>true</performBeanValidation>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

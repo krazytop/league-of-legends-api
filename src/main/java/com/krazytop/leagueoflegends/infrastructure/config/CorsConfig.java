@@ -1,4 +1,4 @@
-package com.krazytop.leagueoflegends.config;
+package com.krazytop.leagueoflegends.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
