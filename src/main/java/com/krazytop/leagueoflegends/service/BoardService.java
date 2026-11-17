@@ -1,5 +1,7 @@
 package com.krazytop.leagueoflegends.service;
 
+import com.krazytop.leagueoflegends.domain.service.MasteryService;
+import com.krazytop.leagueoflegends.domain.service.RankService;
 import com.krazytop.leagueoflegends.entity.Board;
 import com.krazytop.leagueoflegends.entity.Summoner;
 import com.krazytop.leagueoflegends.exception.ApiErrorEnum;
@@ -20,7 +22,7 @@ import java.util.Date;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final SummonerService summonerService;
+    private final SummonerOLDService summonerService;
     private final MatchService matchService;
     private final MasteryService masteryService;
     private final RankService rankService;
