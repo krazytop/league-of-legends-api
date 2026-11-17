@@ -1,9 +1,9 @@
-package com.krazytop.leagueoflegends.nomenclature;
+package com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.reference;
 
 import lombok.Data;
 
 @Data
-public abstract class Nomenclature {
+public abstract class ReferenceSubdocument {
 
     private String id;
     private String name;

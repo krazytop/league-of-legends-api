@@ -2,7 +2,7 @@
 Fonctionnalité: Gestion des invocateurs
 
   Contexte:
-    Etant donné que l'on insère dans la collection "Summoner" le document suivant :
+    Etant donné qu'on insère dans la collection "Summoner" le document suivant :
       """json
       {
         "puuid": "stored-puuid-01",

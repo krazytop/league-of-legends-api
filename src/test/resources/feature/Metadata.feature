@@ -2,7 +2,7 @@
 Fonctionnalité: Gestion des métadonnées de l'application
 
   Scénario: Récupérer les métadonnées actuelles de League of Legends
-    Etant donné que l'on insère dans la collection "Metadata" le document suivant :
+    Etant donné qu'on insère dans la collection "Metadata" le document suivant :
       """json
       {
         "id": 1,

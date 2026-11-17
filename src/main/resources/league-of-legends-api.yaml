@@ -680,13 +680,13 @@ components:
       enum:
         - "RANKED_SOLO_5x5"
         - "RANKED_TEAM_5x5"
-    QueueNomenclatureDTO:
+    QueueReferenceDTO:
       type: object
       required:
         - id
         - name
         - description
-      description: Represents a queue with its nomenclature.
+      description: Represents a queue with its reference.
       properties:
         id:
           type: string
@@ -724,7 +724,7 @@ components:
           example: "14.12"
         language:
           type: string
-          description: The language of the nomenclature for this patch.
+          description: The language of the reference for this patch.
           example: "en_US"
         season:
           type: integer
@@ -733,59 +733,59 @@ components:
           example: 15
         champions:
           type: array
-          description: List of champions and their nomenclature for this patch.
+          description: List of champions and their reference for this patch.
           items:
-            $ref: '#/components/schemas/ChampionNomenclatureDTO'
+            $ref: '#/components/schemas/ChampionReferenceDTO'
         items:
           type: array
-          description: List of items and their nomenclature for this patch.
+          description: List of items and their reference for this patch.
           items:
-            $ref: '#/components/schemas/ItemNomenclatureDTO'
+            $ref: '#/components/schemas/ItemReferenceDTO'
         summonerSpells:
           type: array
-          description: List of summoner spells and their nomenclature for this patch.
+          description: List of summoner spells and their reference for this patch.
           items:
-            $ref: '#/components/schemas/SummonerSpellNomenclatureDTO'
+            $ref: '#/components/schemas/SummonerSpellReferenceDTO'
         augments:
           type: array
-          description: List of augments and their nomenclature for this patch.
+          description: List of augments and their reference for this patch.
           items:
-            $ref: '#/components/schemas/AugmentNomenclatureDTO'
+            $ref: '#/components/schemas/AugmentReferenceDTO'
         runes:
           type: array
-          description: List of runes and their nomenclature for this patch.
+          description: List of runes and their reference for this patch.
           items:
-            $ref: '#/components/schemas/RuneNomenclatureDTO'
+            $ref: '#/components/schemas/RuneReferenceDTO'
         queues:
           type: array
-          description: List of queues and their nomenclature relevant to this patch.
+          description: List of queues and their reference relevant to this patch.
           items:
-            $ref: '#/components/schemas/QueueNomenclatureDTO'
-    NomenclatureDTO:
+            $ref: '#/components/schemas/QueueReferenceDTO'
+    ReferenceDTO:
       type: object
-      description: Base nomenclature.
+      description: Base reference.
       properties:
         id:
           type: string
-          description: The unique identifier for the nomenclature.
+          description: The unique identifier for the reference.
           example: "Aatrox"
         name:
           type: string
-          description: The display name of the nomenclature.
+          description: The display name of the reference.
           example: "Aatrox"
         image:
           type: string
-          description: URL or path to the image of the nomenclature.
+          description: URL or path to the image of the reference.
           example: "https://example.com/aatrox.png"
         description:
           type: string
-          description: A brief description of the nomenclature.
+          description: A brief description of the reference.
           example: "The Darkin Blade"
-    ChampionNomenclatureDTO:
+    ChampionReferenceDTO:
       type: object
-      description: Represents a champion with its nomenclature and details.
+      description: Represents a champion with its reference and details.
       allOf:
-        - $ref: '#/components/schemas/NomenclatureDTO'
+        - $ref: '#/components/schemas/ReferenceDTO'
       properties:
         id:
           type: string
@@ -811,11 +811,11 @@ components:
           items:
             type: string
           example: [ "Fighter", "Tank" ]
-    ItemNomenclatureDTO:
+    ItemReferenceDTO:
       type: object
-      description: Represents an item with its nomenclature and detailed properties.
+      description: Represents an item with its reference and detailed properties.
       allOf:
-        - $ref: '#/components/schemas/NomenclatureDTO'
+        - $ref: '#/components/schemas/ReferenceDTO'
       properties:
         plainText:
           type: string
@@ -858,11 +858,11 @@ components:
           items:
             type: string
           example: [ "3006", "3009" ]
-    SummonerSpellNomenclatureDTO:
+    SummonerSpellReferenceDTO:
       type: object
-      description: Represents a summoner spell with its nomenclature and detailed properties.
+      description: Represents a summoner spell with its reference and detailed properties.
       allOf:
-        - $ref: '#/components/schemas/NomenclatureDTO'
+        - $ref: '#/components/schemas/ReferenceDTO'
       properties:
         tooltip:
           type: string
@@ -873,11 +873,11 @@ components:
           format: float
           description: The cooldown duration of the summoner spell in seconds.
           example: 300.0
-    AugmentNomenclatureDTO:
+    AugmentReferenceDTO:
       type: object
-      description: Represents an augment with its nomenclature and data values.
+      description: Represents an augment with its reference and data values.
       allOf:
-        - $ref: '#/components/schemas/NomenclatureDTO'
+        - $ref: '#/components/schemas/ReferenceDTO'
       properties:
         dataValues:
           type: object
@@ -890,21 +890,21 @@ components:
           example:
             BonusDamagePercent: [10]
             HealthThreshold: [500]
-    RunePerkNomenclatureDTO:
+    RunePerkReferenceDTO:
       type: object
       description: Represents a specific rune perk.
       allOf:
-        - $ref: '#/components/schemas/NomenclatureDTO'
+        - $ref: '#/components/schemas/ReferenceDTO'
       properties:
         longDescription:
           type: string
           description: The detailed description of the rune perk.
           example: "Gain 1-10 (based on level) adaptive force for 10 seconds after damaging a champion. Stacks up to 5 times. Max stacks: 5-50 (based on level) adaptive force."
-    RuneNomenclatureDTO:
+    RuneReferenceDTO:
       type: object
       description: Represents a rune path with its associated perks.
       allOf:
-        - $ref: '#/components/schemas/NomenclatureDTO'
+        - $ref: '#/components/schemas/ReferenceDTO'
       properties:
         perks:
           type: array
@@ -912,7 +912,7 @@ components:
           items:
             type: array
             items:
-              $ref: '#/components/schemas/RunePerkNomenclatureDTO'
+              $ref: '#/components/schemas/RunePerkReferenceDTO'
           example:
             - id: "Conqueror"#TODO enlever les string ?
               name: "Conqueror"

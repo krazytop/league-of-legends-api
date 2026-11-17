@@ -2,7 +2,7 @@
 Fonctionnalité: Gestion des classements des invocateurs
 
   Scénario: Récupérer les classements d'un invocateur existant
-    Etant donné que l'on insère dans la collection "Rank" le document suivant :
+    Etant donné qu'on insère dans la collection "Rank" le document suivant :
       """json
       {
         "puuid": "puuid-1234",
@@ -80,14 +80,14 @@ Fonctionnalité: Gestion des classements des invocateurs
       """
 
   Scénario: Mettre à jour les classements d'un invocateur existant
-    Etant donné que l'on insère dans la collection "Metadata" le document suivant :
+    Etant donné qu'on insère dans la collection "Metadata" le document suivant :
       """json
       {
         "id": 1,
         "currentSeason": 16
       }
       """
-    Et que l'on insère dans la collection "Rank" le document suivant :
+    Et qu'on insère dans la collection "Rank" le document suivant :
       """json
       {
         "puuid": "puuid-1234",
@@ -231,14 +231,14 @@ Fonctionnalité: Gestion des classements des invocateurs
       """
 
   Scénario: Ne pas mettre à jour les classements d'un invocateur existant si pas de nouvelles parties
-    Etant donné que l'on insère dans la collection "Metadata" le document suivant :
+    Etant donné qu'on insère dans la collection "Metadata" le document suivant :
       """json
       {
         "id": 1,
         "currentSeason": 16
       }
       """
-    Et que l'on insère dans la collection "Rank" le document suivant :
+    Et qu'on insère dans la collection "Rank" le document suivant :
       """json
       {
         "puuid": "puuid-1234",
@@ -312,7 +312,7 @@ Fonctionnalité: Gestion des classements des invocateurs
       """
 
   Scénario: Mettre à jour les classements d'un nouvel invocateur
-    Etant donné que l'on insère dans la collection "Metadata" le document suivant :
+    Etant donné qu'on insère dans la collection "Metadata" le document suivant :
       """json
       {
         "id": 1,

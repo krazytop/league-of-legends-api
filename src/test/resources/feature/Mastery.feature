@@ -2,7 +2,7 @@
 Fonctionnalité: Gestion des maîtrises de champions
 
   Scénario: Récupérer les maîtrises d'un invocateur existant
-    Etant donné que l'on insère dans la collection "Mastery" le document suivant :
+    Etant donné qu'on insère dans la collection "Mastery" le document suivant :
     """json
     {
       "puuid": "puuid-1234",
@@ -52,7 +52,7 @@ Fonctionnalité: Gestion des maîtrises de champions
       """
 
   Scénario: Mettre à jour les maîtrises d'un invocateur existant
-    Etant donné que l'on insère dans la collection "Mastery" le document suivant :
+    Etant donné qu'on insère dans la collection "Mastery" le document suivant :
       """json
       {
       "puuid": "puuid-1234",

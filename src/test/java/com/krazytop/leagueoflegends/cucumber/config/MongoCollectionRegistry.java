@@ -4,6 +4,7 @@ import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.Ma
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.MetadataDocument;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.RanksDocument;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.SummonerDocument;
+import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.reference.PatchDocument;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ public class MongoCollectionRegistry {
     private static final Map<String, Class<?>> COLLECTIONS = Map.of(
             "Mastery", MasteriesDocument.class,
             "Metadata", MetadataDocument.class,
+            "Patch", PatchDocument.class,
             "Rank", RanksDocument.class,
             "Summoner", SummonerDocument.class
     );

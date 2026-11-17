@@ -19,6 +19,11 @@ public class HttpApiStep extends LeagueOfLegendsIT {
         lastResponse = mockMvc.perform(get(url));
     }
 
+    @Quand("j'appelle GET {string} avec le header {string} égal à {string}")
+    public void callGetWithHeader(String url, String headerName, String headerValue) throws Exception {
+        lastResponse = mockMvc.perform(get(url).header(headerName, headerValue));
+    }
+
     @Quand("j'appelle PUT {string}")
     public void callPut(String url) throws Exception {
         lastResponse = mockMvc.perform(put(url));
