@@ -17,19 +17,19 @@ public class MasteryService {
     private final MasteryRepositoryPort repositoryPort;
 
     /**
-     * Récupère les maîtrises de tous les champions d'un joueur
+     * Récupère les maîtrises de tous les champions d'un invocateur
      *
-     * @param puuid le puuid du joueur
-     * @return la liste des maîtrises du joueur
+     * @param puuid le puuid de l'invocateur
+     * @return la liste des maîtrises de l'invocateur
      */
     public List<Mastery> getMasteries(String puuid) {
         return repositoryPort.findMasteries(puuid);
     }
 
     /**
-     * Met à jour les maîtrises de tous les champions d'un joueur
+     * Met à jour les maîtrises de tous les champions d'un invocateur
      *
-     * @param puuid le puuid du joueur
+     * @param puuid le puuid de l'invocateur
      */
     public void updateMasteries(String puuid) {
         List<Mastery> masteries = riotPort.fetchMasteries(EnumRegion.EUW1, puuid);//TODO region : à voir soit findSummoner en bdd soit api riot soit erreur

@@ -1,8 +1,8 @@
 # language: fr
-Fonctionnalité: Gestion des classements
+Fonctionnalité: Gestion des classements des invocateurs
 
-  Scénario: Récupérer les classements d'un joueur existant
-    Etant donné que la collection "Rank" contient le document suivant :
+  Scénario: Récupérer les classements d'un invocateur existant
+    Etant donné que l'on insère dans la collection "Rank" le document suivant :
       """json
       {
         "puuid": "puuid-1234",
@@ -70,7 +70,7 @@ Fonctionnalité: Gestion des classements
       ]
       """
 
-  Scénario: Récupérer les classements d'un nouveau joueur
+  Scénario: Récupérer les classements d'un nouvel invocateur
     Etant donné que la collection "Rank" est vide
     Quand j'appelle GET "/rank/puuid-inconnu"
     Alors le statut HTTP est 200
@@ -79,15 +79,15 @@ Fonctionnalité: Gestion des classements
       []
       """
 
-  Scénario: Mettre à jour les classements d'un joueur existant
-    Etant donné que la collection "Metadata" contient le document suivant :
+  Scénario: Mettre à jour les classements d'un invocateur existant
+    Etant donné que l'on insère dans la collection "Metadata" le document suivant :
       """json
       {
         "id": 1,
         "currentSeason": 16
       }
       """
-    Et que la collection "Rank" contient le document suivant :
+    Et que l'on insère dans la collection "Rank" le document suivant :
       """json
       {
         "puuid": "puuid-1234",
@@ -230,15 +230,15 @@ Fonctionnalité: Gestion des classements
       }
       """
 
-  Scénario: Ne pas mettre à jour les classements d'un joueur existant si pas de nouvelles parties
-    Etant donné que la collection "Metadata" contient le document suivant :
+  Scénario: Ne pas mettre à jour les classements d'un invocateur existant si pas de nouvelles parties
+    Etant donné que l'on insère dans la collection "Metadata" le document suivant :
       """json
       {
         "id": 1,
         "currentSeason": 16
       }
       """
-    Et que la collection "Rank" contient le document suivant :
+    Et que l'on insère dans la collection "Rank" le document suivant :
       """json
       {
         "puuid": "puuid-1234",
@@ -311,8 +311,8 @@ Fonctionnalité: Gestion des classements
       }
       """
 
-  Scénario: Mettre à jour les classements d'un nouveau joueur
-    Etant donné que la collection "Metadata" contient le document suivant :
+  Scénario: Mettre à jour les classements d'un nouvel invocateur
+    Etant donné que l'on insère dans la collection "Metadata" le document suivant :
       """json
       {
         "id": 1,

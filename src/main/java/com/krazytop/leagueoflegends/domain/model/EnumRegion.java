@@ -2,6 +2,9 @@ package com.krazytop.leagueoflegends.domain.model;
 
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 @AllArgsConstructor
 public enum EnumRegion {
 
@@ -83,4 +86,11 @@ public enum EnumRegion {
     ME1("ME1");
 
     private final String code;
+
+    public static EnumRegion fromCode(String code) {
+        return Arrays.stream(values())
+                .filter(region -> region.code.equalsIgnoreCase(code))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Code de région inconnu : " + code));
+    }
 }

@@ -14,7 +14,7 @@ public class PreparationBddStep extends LeagueOfLegendsIT {
         mongoTemplate.getDb().drop();//TODO il faudra drop collection par collection en excluant les nomenclatures
     }
 
-    @Etantdonnéque("la collection {string} contient le document suivant :")
+    @Etantdonnéque("l'on insère dans la collection {string} le document suivant :")
     public void insertSingleDocumentInCollection(String collectionName, String jsonPayload) throws Exception {
         Class<?> documentClass = collectionRegistry.resolveClass(collectionName);
         Object document = objectMapper.readValue(jsonPayload, documentClass);
@@ -22,9 +22,10 @@ public class PreparationBddStep extends LeagueOfLegendsIT {
         mongoTemplate.insert(document, collectionName);
     }
 
-    @Etantdonnéque("la collection {string} contient les documents suivants :")
+    @Etantdonnéque("l'on insère dans la collection {string} les documents suivants :")
     public void insertDocumentsInCollection(String collectionName, String jsonPayload) throws Exception {
         Class<?> documentClass = collectionRegistry.resolveClass(collectionName);
+        jsonPayload = cucumberContext.resolveDynamicData(jsonPayload);
 
         JavaType listType = objectMapper.getTypeFactory()
                 .constructCollectionType(List.class, documentClass);

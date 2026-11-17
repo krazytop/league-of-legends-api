@@ -7,17 +7,17 @@ import java.util.List;
 public interface MasteryRepositoryPort {
 
     /**
-     * Récupère les maîtrises de tous les champions d'un joueur depuis la BDD
+     * Récupère les maîtrises de tous les champions d'un invocateur depuis la BDD
      *
-     * @param puuid le puuid du joueur
-     * @return la liste des maîtrises du joueur
+     * @param puuid le puuid de l'invocateur
+     * @return la liste des maîtrises de l'invocateur
      */
     List<Mastery> findMasteries(String puuid);
 
     /**
-     * Met à jour les maîtrises de tous les champions d'un joueur en BDD
+     * Met à jour les maîtrises de tous les champions d'un invocateur en BDD
      *
-     * @param puuid le puuid du joueur
+     * @param puuid le puuid de l'invocateur
      */
     void saveMasteries(List<Mastery> masteries, String puuid);
 }

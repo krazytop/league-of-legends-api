@@ -20,12 +20,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,7 +36,7 @@ public class MatchService {
     private String apiKey;
     private final MatchRepository matchRepository;
     private final FailedMatchRepository failedMatchRepository;
-    private final SummonerService summonerService;
+    private final SummonerOLDService summonerService;
     private final MatchMapper matchMapper;
     private final ArenaCompletionService arenaCompletionService;
 

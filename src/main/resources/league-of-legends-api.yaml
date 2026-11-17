@@ -1034,6 +1034,7 @@ components:
           example: 1234567890
         playedSeasonsOrSets:
           type: array
+          uniqueItems: true
           items:
             type: integer
             format: int32

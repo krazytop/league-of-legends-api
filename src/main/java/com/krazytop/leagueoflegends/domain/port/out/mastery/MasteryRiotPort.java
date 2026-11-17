@@ -8,11 +8,11 @@ import java.util.List;
 public interface MasteryRiotPort {
 
     /**
-     * Récupère les maîtrises de tous les champions d'un joueur depuis l'api de RIOT
+     * Récupère les maîtrises de tous les champions d'un invocateur depuis l'api de RIOT
      *
-     * @param region la région du joueur
-     * @param puuid le puuid du joueur
-     * @return la liste des maîtrises du joueur
+     * @param region la région de l'invocateur
+     * @param puuid le puuid de l'invocateur
+     * @return la liste des maîtrises de l'invocateur
      */
     List<Mastery> fetchMasteries(EnumRegion region, String puuid);
 }

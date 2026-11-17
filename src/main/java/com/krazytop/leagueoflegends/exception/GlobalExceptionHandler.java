@@ -1,9 +1,12 @@
 package com.krazytop.leagueoflegends.exception;
 
+import com.krazytop.leagueoflegends.domain.exception.ResourceNotFoundException;
 import com.krazytop.leagueoflegends.model.generated.ApiErrorDTO;
 import com.krazytop.leagueoflegends.model.generated.ApiErrorDTODetailsInner;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,6 +48,12 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ApiErrorDTO> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
         log.error("Type mismatch: {}", ex.getMessage(), ex);
         return buildApiResponseError(TYPE_MISMATCHED);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ProblemDetail handleNotFound(ResourceNotFoundException ex) {
+        log.error(ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(CustomException.class)

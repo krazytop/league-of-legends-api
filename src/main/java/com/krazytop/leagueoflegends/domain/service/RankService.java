@@ -25,19 +25,19 @@ public class RankService {
     private final Clock clock;
 
     /**
-     * Récupère les classements de toutes les saisons ou set et de toutes les queues d'un joueur
+     * Récupère les classements de toutes les saisons ou set et de toutes les queues d'un invocateur
      *
-     * @param puuid le puuid du joueur
-     * @return la liste des maîtrises du joueur
+     * @param puuid le puuid de l'invocateur
+     * @return la liste des maîtrises de l'invocateur
      */
     public List<SeasonOrSetRanks> getRanks(String puuid) {
         return repositoryPort.findRanks(puuid);
     }
 
     /**
-     * Met à jour les classements d'un joueur.
+     * Met à jour les classements d'un invocateur.
      *
-     * @param puuid le puuid du joueur
+     * @param puuid le puuid de l'invocateur
      */
     public void updateRanks(String puuid) {
         int currentSeasonOrSet = metadataService.getCurrentSeason();

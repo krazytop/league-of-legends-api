@@ -8,11 +8,11 @@ import java.util.List;
 public interface RankRiotPort {
 
     /**
-     * Récupère les classements, de toutes les queues, de la saison ou set actuel, d'un joueur depuis l'api de RIOT
+     * Récupère les classements, de toutes les queues, de la saison ou set actuel, d'un invocateur depuis l'api de RIOT
      *
-     * @param region la région du joueur
-     * @param puuid le puuid du joueur
-     * @return la liste des classements du joueur
+     * @param region la région de l'invocateur
+     * @param puuid le puuid de l'invocateur
+     * @return la liste des classements de l'invocateur
      */
     List<QueueRanks> fetchRanks(EnumRegion region, String puuid);
 }

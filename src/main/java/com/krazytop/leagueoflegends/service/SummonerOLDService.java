@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class SummonerService {
+public class SummonerOLDService {
 
     @Value("${league-of-legends.api-key:api-key}")
     private String apiKey;
@@ -37,14 +37,6 @@ public class SummonerService {
 
     public SummonerDTO getSummonerDTO(String tag, String name) {
         return summonerMapper.toDTO(getLocalSummoner(tag, name).orElse(getRemoteSummoner(tag, name)));
-    }
-
-    public SummonerDTO getSummonerDTO(String puuid) {
-        return summonerMapper.toDTO(getSummoner(puuid));
-    }
-
-    private String getRegion(String puuid) {
-        return "euw1";//TODO implémenter l'API + appeler ça uniquement si la region est mauvaise pour eco la limit rate ?
     }
 
     public SummonerDTO updateSummoner(String puuid) {
@@ -65,7 +57,7 @@ public class SummonerService {
 
     private Summoner getRemoteSummoner(String puuid) {
         try {
-            String region = getRegion(puuid);
+            String region = "euw1";
             ObjectMapper mapper = new ObjectMapper();
             String summonerApiUrl = String.format("https://%s.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/%s?api_key=%s", region, puuid, apiKey);
             Summoner summoner = mapper.convertValue(mapper.readTree(new URI(summonerApiUrl).toURL()), Summoner.class);
@@ -84,7 +76,7 @@ public class SummonerService {
             name = name.replace(" ", "%20");
             ObjectMapper mapper = new ObjectMapper();
             Account account = getAccount(tag, name);
-            String region = getRegion(account.getPuuid());
+            String region = "euw1";
             String summonerApiUrl = String.format("https://%s.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/%s?api_key=%s", region, account.getPuuid(), apiKey);
             Summoner summoner = mapper.convertValue(mapper.readTree(new URI(summonerApiUrl).toURL()), Summoner.class);
             summoner.setRegion(region);

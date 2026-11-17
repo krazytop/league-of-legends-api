@@ -22,7 +22,7 @@ import java.util.Date;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final SummonerService summonerService;
+    private final SummonerOLDService summonerService;
     private final MatchService matchService;
     private final MasteryService masteryService;
     private final RankService rankService;

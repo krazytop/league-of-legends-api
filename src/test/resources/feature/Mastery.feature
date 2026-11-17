@@ -1,8 +1,8 @@
 # language: fr
 Fonctionnalité: Gestion des maîtrises de champions
 
-  Scénario: Récupérer les maîtrises d'un joueur existant
-    Etant donné que la collection "Mastery" contient le document suivant :
+  Scénario: Récupérer les maîtrises d'un invocateur existant
+    Etant donné que l'on insère dans la collection "Mastery" le document suivant :
     """json
     {
       "puuid": "puuid-1234",
@@ -42,7 +42,7 @@ Fonctionnalité: Gestion des maîtrises de champions
       ]
       """
 
-  Scénario: Récupérer les maîtrises d'un nouveau joueur
+  Scénario: Récupérer les maîtrises d'un nouvel invocateur
     Etant donné que la collection "Mastery" est vide
     Quand j'appelle GET "/mastery/puuid-inconnu"
     Alors le statut HTTP est 200
@@ -51,8 +51,8 @@ Fonctionnalité: Gestion des maîtrises de champions
       []
       """
 
-  Scénario: Mettre à jour les maîtrises d'un joueur existant
-    Etant donné que la collection "Mastery" contient le document suivant :
+  Scénario: Mettre à jour les maîtrises d'un invocateur existant
+    Etant donné que l'on insère dans la collection "Mastery" le document suivant :
       """json
       {
       "puuid": "puuid-1234",
@@ -139,7 +139,7 @@ Fonctionnalité: Gestion des maîtrises de champions
     }
       """
 
-  Scénario: Mettre à jour les maîtrises d'un nouveau joueur
+  Scénario: Mettre à jour les maîtrises d'un nouvel invocateur
     Etant donné que la collection "Mastery" est vide
     Et que l'API Riot renvoie les maîtrises suivantes pour le puuid "puuid-1234" :
     """json

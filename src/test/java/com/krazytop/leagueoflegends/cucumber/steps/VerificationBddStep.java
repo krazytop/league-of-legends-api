@@ -21,7 +21,7 @@ public class VerificationBddStep extends LeagueOfLegendsIT {
     @Alors("la collection {string} contient uniquement le document suivant :")
     public void verifyCollectionContainsOnlySingleDocument(String collectionName, String expectedJson) throws Exception {
         Class<?> documentClass = collectionRegistry.resolveClass(collectionName);
-        expectedJson = cucumberContext.resolve(expectedJson);
+        expectedJson = cucumberContext.resolveDynamicData(expectedJson);
         Object expectedDocument = objectMapper.readValue(expectedJson, documentClass);
 
         List<?> actualDocuments = mongoTemplate.findAll(documentClass, collectionName);
@@ -37,7 +37,7 @@ public class VerificationBddStep extends LeagueOfLegendsIT {
     @Alors("la collection {string} contient uniquement les documents suivants :")
     public void verifyCollectionContainsOnly(String collectionName, String expectedJson) throws Exception {
         Class<?> documentClass = collectionRegistry.resolveClass(collectionName);
-        expectedJson = cucumberContext.resolve(expectedJson);
+        expectedJson = cucumberContext.resolveDynamicData(expectedJson);
 
         JavaType listType = objectMapper.getTypeFactory()
                 .constructCollectionType(List.class, documentClass);
@@ -45,7 +45,6 @@ public class VerificationBddStep extends LeagueOfLegendsIT {
 
         List<?> actualDocuments = mongoTemplate.findAll(documentClass, collectionName);
 
-        // Vérifie la taille exacte ET la correspondance profonde de tous les champs
         assertThat(actualDocuments)
                 .hasSameSizeAs(expectedDocuments)
                 .usingRecursiveComparison()

@@ -36,6 +36,7 @@ public class HttpApiStep extends LeagueOfLegendsIT {
 
     @Alors("la réponse JSON est :")
     public void verifyJsonResponse(String expectedJson) throws Exception {
+        expectedJson = cucumberContext.resolveDynamicData(expectedJson);
         lastResponse.andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 }

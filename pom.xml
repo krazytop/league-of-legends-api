@@ -33,6 +33,8 @@
         <jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <cucumber.version>7.20.1</cucumber.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <r4j.version>3.0.0</r4j.version>
 
         <sonar.organization>krazytop</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -108,12 +110,12 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.6.3</version>
+            <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.stelar7</groupId>
             <artifactId>R4J</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>${r4j.version}</version>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>

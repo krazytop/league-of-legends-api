@@ -1,7 +1,9 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper;
 
+import com.krazytop.leagueoflegends.domain.model.EnumGlobalRegion;
 import com.krazytop.leagueoflegends.domain.model.EnumRegion;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
+import no.stelar7.api.r4j.basic.constants.api.regions.RegionShard;
 import org.mapstruct.Mapper;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
@@ -30,6 +32,15 @@ public interface ShardRiotMapper {
             case TH2 -> LeagueShard.TH2;
             case TW2 -> LeagueShard.TW2;
             case ME1 -> LeagueShard.ME1;
+        };
+    }
+
+    default RegionShard toDTO(EnumGlobalRegion region) {
+        return switch (region) {
+            case AMERICAS -> RegionShard.AMERICAS;
+            case EUROPE -> RegionShard.EUROPE;
+            case ASIA -> RegionShard.ASIA;
+            case SEA -> RegionShard.SEA;
         };
     }
 }

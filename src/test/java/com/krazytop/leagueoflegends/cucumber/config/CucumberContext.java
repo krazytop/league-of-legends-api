@@ -22,7 +22,7 @@ public class CucumberContext {
         placeholders.put(key, value);
     }
 
-    public String resolve(String text) {
+    public String resolveDynamicData(String text) {
         if (text == null) {
             return null;
         }
