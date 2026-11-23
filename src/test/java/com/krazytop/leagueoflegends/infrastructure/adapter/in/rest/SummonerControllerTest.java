@@ -1,6 +1,6 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.in.rest;
 
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.Summoner;
 import com.krazytop.leagueoflegends.domain.service.SummonerService;
 import com.krazytop.leagueoflegends.infrastructure.adapter.in.rest.mapper.SummonerRestMapper;
@@ -47,12 +47,12 @@ class SummonerControllerTest {
                 .setTag(tag)
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567)
+                .setIcon("4567")
                 .setUpdateDate(updateDate)
                 .setSpentTime(123456L)
                 .setPlayedSeasons(Set.of(13, 14, 15));
 
-        when(service.getSummoner(tag, name)).thenReturn(summoner);
+        when(service.getOrFetchSummoner(tag, name)).thenReturn(summoner);
 
         SummonerDTO expectedDto = new SummonerDTO()
                 .setPuuid("test-puuid-123")
@@ -60,7 +60,7 @@ class SummonerControllerTest {
                 .setTag(tag)
                 .setRegion("EUW1")
                 .setLevel(450)
-                .setIcon(4567)
+                .setIcon("4567")
                 .setUpdateDate(updateDate)
                 .setSpentTime(123456L)
                 .setPlayedSeasonsOrSets(Set.of(13, 14, 15));
@@ -73,7 +73,7 @@ class SummonerControllerTest {
         assertThat(response.getBody())
                 .usingRecursiveComparison()
                 .isEqualTo(expectedDto);
-        verify(service).getSummoner(tag, name);
+        verify(service).getOrFetchSummoner(tag, name);
     }
 
     @Test
@@ -88,12 +88,12 @@ class SummonerControllerTest {
                 .setTag("EUW")
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567)
+                .setIcon("4567")
                 .setUpdateDate(updateDate)
                 .setSpentTime(123456L)
                 .setPlayedSeasons(Set.of(13, 14, 15));
 
-        when(service.getSummoner(puuid)).thenReturn(summoner);
+        when(service.getOrFetchSummoner(puuid)).thenReturn(summoner);
 
         SummonerDTO expectedDto = new SummonerDTO()
                 .setPuuid(puuid)
@@ -101,7 +101,7 @@ class SummonerControllerTest {
                 .setTag("EUW")
                 .setRegion("EUW1")
                 .setLevel(450)
-                .setIcon(4567)
+                .setIcon("4567")
                 .setUpdateDate(updateDate)
                 .setSpentTime(123456L)
                 .setPlayedSeasonsOrSets(Set.of(13, 14, 15));
@@ -114,7 +114,7 @@ class SummonerControllerTest {
         assertThat(response.getBody())
                 .usingRecursiveComparison()
                 .isEqualTo(expectedDto);
-        verify(service).getSummoner(puuid);
+        verify(service).getOrFetchSummoner(puuid);
     }
 
     @Test
@@ -129,7 +129,7 @@ class SummonerControllerTest {
                 .setTag("EUW")
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(451)
-                .setIcon(4567)
+                .setIcon("4567")
                 .setUpdateDate(updateDate)
                 .setSpentTime(123456L)
                 .setPlayedSeasons(Set.of(13, 14, 15));
@@ -142,7 +142,7 @@ class SummonerControllerTest {
                 .setTag("EUW")
                 .setRegion("EUW1")
                 .setLevel(451)
-                .setIcon(4567)
+                .setIcon("4567")
                 .setUpdateDate(updateDate)
                 .setSpentTime(123456L)
                 .setPlayedSeasonsOrSets(Set.of(13, 14, 15));

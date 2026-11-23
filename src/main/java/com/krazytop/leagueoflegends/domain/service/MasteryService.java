@@ -1,6 +1,6 @@
 package com.krazytop.leagueoflegends.domain.service;
 
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.Mastery;
 import com.krazytop.leagueoflegends.domain.port.out.mastery.MasteryRepositoryPort;
 import com.krazytop.leagueoflegends.domain.port.out.mastery.MasteryRiotPort;
@@ -15,9 +15,10 @@ public class MasteryService {
 
     private final MasteryRiotPort riotPort;
     private final MasteryRepositoryPort repositoryPort;
+    private final SummonerService summonerService;
 
     /**
-     * Récupère les maîtrises de tous les champions d'un invocateur
+     * Récupère les maîtrises de tous les champions d'un invocateur.
      *
      * @param puuid le puuid de l'invocateur
      * @return la liste des maîtrises de l'invocateur
@@ -27,12 +28,13 @@ public class MasteryService {
     }
 
     /**
-     * Met à jour les maîtrises de tous les champions d'un invocateur
+     * Met à jour les maîtrises de tous les champions d'un invocateur.
      *
      * @param puuid le puuid de l'invocateur
      */
     public void updateMasteries(String puuid) {
-        List<Mastery> masteries = riotPort.fetchMasteries(EnumRegion.EUW1, puuid);//TODO region : à voir soit findSummoner en bdd soit api riot soit erreur
+        EnumRegion region = summonerService.getSummonerRegion(puuid);
+        List<Mastery> masteries = riotPort.fetchMasteries(region, puuid);
         repositoryPort.saveMasteries(masteries, puuid);
     }
 

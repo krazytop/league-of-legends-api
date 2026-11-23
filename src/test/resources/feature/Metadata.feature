@@ -19,7 +19,7 @@ Fonctionnalité: Gestion des métadonnées de l'application
     Et la réponse JSON est :
       """json
       {
-        "currentSeasonOrSet": 16,
+        "currentSeason": 16,
         "currentPatch": "16.21"
       }
       """

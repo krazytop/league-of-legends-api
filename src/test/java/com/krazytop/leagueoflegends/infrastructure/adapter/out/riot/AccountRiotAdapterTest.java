@@ -1,8 +1,7 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.riot;
 
 import com.krazytop.leagueoflegends.domain.model.Account;
-import com.krazytop.leagueoflegends.domain.model.EnumGlobalRegion;
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.AccountRiotMapper;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.ShardRiotMapper;
 import no.stelar7.api.r4j.basic.constants.api.regions.RegionShard;
@@ -23,9 +22,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccountRiotAdapterTest {
@@ -67,7 +64,7 @@ class AccountRiotAdapterTest {
                 .setRegion(EnumRegion.EUW1);
 
         // Act
-        Optional<Account> result = accountRiotAdapter.fetchAccount(EnumGlobalRegion.EUROPE, puuid);
+        Optional<Account> result = accountRiotAdapter.fetchAccount(puuid);
 
         // Assert
         assertThat(result).contains(expectedAccount);
@@ -102,7 +99,7 @@ class AccountRiotAdapterTest {
                 .setRegion(EnumRegion.EUW1);
 
         // Act
-        Optional<Account> result = accountRiotAdapter.fetchAccount(EnumGlobalRegion.EUROPE, name, tag);
+        Optional<Account> result = accountRiotAdapter.fetchAccount(name, tag);
 
         // Assert
         assertThat(result).contains(expectedAccount);
@@ -118,7 +115,7 @@ class AccountRiotAdapterTest {
         when(r4j.getAccountAPI().getAccountByTag(RegionShard.EUROPE, name, tag)).thenReturn(null);
 
         // Act
-        Optional<Account> result = accountRiotAdapter.fetchAccount(EnumGlobalRegion.EUROPE, name, tag);
+        Optional<Account> result = accountRiotAdapter.fetchAccount(name, tag);
 
         // Assert
         assertThat(result).isEmpty();

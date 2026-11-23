@@ -1,6 +1,6 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.riot;
 
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.Summoner;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.ShardRiotMapper;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.SummonerRiotMapper;
@@ -50,7 +50,7 @@ class SummonerRiotAdapterTest {
 
         Summoner expectedSummoner = new Summoner()
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         // Act
         Optional<Summoner> result = summonerRiotAdapter.fetchSummoner(EnumRegion.EUW1, puuid);

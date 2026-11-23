@@ -1,6 +1,6 @@
 package com.krazytop.leagueoflegends.domain.service;
 
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.Mastery;
 import com.krazytop.leagueoflegends.domain.port.out.mastery.MasteryRepositoryPort;
 import com.krazytop.leagueoflegends.domain.port.out.mastery.MasteryRiotPort;
@@ -23,6 +23,9 @@ class MasteryServiceTest {
 
     @Mock
     private MasteryRepositoryPort repositoryPort;
+
+    @Mock
+    private SummonerService summonerService;
 
     @InjectMocks
     private MasteryService masteryService;
@@ -52,11 +55,14 @@ class MasteryServiceTest {
         String puuid = "test-puuid-123";
         List<Mastery> fetchedMasteries = List.of(mock(Mastery.class));
         when(riotPort.fetchMasteries(EnumRegion.EUW1, puuid)).thenReturn(fetchedMasteries);
+        when(summonerService.getSummonerRegion(puuid)).thenReturn(EnumRegion.EUW1);
+
 
         // Act
         masteryService.updateMasteries(puuid);
 
         // Assert
+        verify(summonerService).getSummonerRegion(puuid);
         verify(riotPort).fetchMasteries(EnumRegion.EUW1, puuid);
         verify(repositoryPort).saveMasteries(fetchedMasteries, puuid);
     }

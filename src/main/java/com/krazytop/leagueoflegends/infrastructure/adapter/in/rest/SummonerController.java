@@ -21,7 +21,7 @@ public class SummonerController implements SummonerApi {
     public ResponseEntity<SummonerDTO> getSummonerByTagAndName(String tag, String name) {
         log.info("Récupération de l'invocateur {} #{} ", name, tag);
         SummonerDTO summoner = mapper.toDTO(
-                service.getSummoner(tag, name));
+                service.getOrFetchSummoner(tag, name));
         return ResponseEntity.ok(summoner);
     }
 
@@ -29,7 +29,7 @@ public class SummonerController implements SummonerApi {
     public ResponseEntity<SummonerDTO> getSummonerByPuuid(String puuid) {
         log.info("Récupération de l'invocateur pour le puuid {}", puuid);
         SummonerDTO summoner = mapper.toDTO(
-                service.getSummoner(puuid));
+                service.getOrFetchSummoner(puuid));
         return ResponseEntity.ok(summoner);
     }
 

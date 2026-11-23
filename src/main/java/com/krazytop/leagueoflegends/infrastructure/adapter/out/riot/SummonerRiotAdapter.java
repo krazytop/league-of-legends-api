@@ -1,6 +1,6 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.riot;
 
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.Summoner;
 import com.krazytop.leagueoflegends.domain.port.out.summoner.SummonerRiotPort;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.ShardRiotMapper;

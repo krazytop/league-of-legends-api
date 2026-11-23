@@ -1,6 +1,6 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.riot;
 
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.QueueRanks;
 import com.krazytop.leagueoflegends.domain.model.RankInformations;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.RankRiotMapper;

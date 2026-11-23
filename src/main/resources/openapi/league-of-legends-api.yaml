@@ -1,0 +1,1558 @@
+openapi: 3.0.0
+info:
+  title: League of Legends API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: League of Legends API
+
+tags:
+  - name: Metadata
+    description: Operations related to metadata.
+  - name: Patch
+    description: Operations related to patches.
+  - name: Rank
+    description: Operations related to ranks.
+  - name: Summoner
+    description: Operations related to summoners.
+  - name: Mastery
+    description: Operations related to masteries.
+  - name: Match
+    description: Operations related to matches.
+  - name: Arena Completion
+    description: Operations related to Arena champions completion.
+  - name: Board
+    description: Operations related to boards.
+
+paths:
+  /metadata:
+    get:
+      summary: Retrieve metadata.
+      operationId: getMetadata
+      tags:
+        - Metadata
+      responses:
+        '200':
+          description: Metadata successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /patch/{patchId}:
+    get:
+      summary: Retrieve patch.
+      operationId: getPatch
+      tags:
+        - Patch
+      parameters:
+        - in: path
+          name: patchId
+          schema:
+            type: string
+          required: true
+          description: The id of the requested patch.
+        - in: header
+          name: Accept-Language
+          schema:
+            type: string
+          required: true
+          description: The language of the requested patch.
+      responses:
+        '200':
+          description: Patch successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchDTO'
+        '404':
+          description: Patch not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /rank/{puuid}:
+    parameters:
+      - in: path
+        name: puuid
+        schema:
+          type: string
+        required: true
+        description: The puuid of the summoner.
+    get:
+      summary: Retrieve all summoner ranks.
+      operationId: getRanks
+      tags:
+        - Rank
+      responses:
+        '200':
+          description: Ranks successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RanksDTO'
+        '400':
+          description: Summoner need to be import first.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+    put:
+      summary: Update all summoner ranks.
+      operationId: updateRanks
+      tags:
+        - Rank
+      responses:
+        '200':
+          description: Ranks successfully updated.
+        '400':
+          description: Summoner not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /summoner/{puuid}:
+    parameters:
+      - in: path
+        name: puuid
+        schema:
+          type: string
+        required: true
+        description: The puuid of the summoner.
+    get:
+      summary: Retrieve a summoner by its puuid.
+      operationId: getSummonerByPuuid
+      tags:
+        - Summoner
+      responses:
+        '200':
+          description: Summoner successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummonerDTO'
+        '404':
+          description: Summoner not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+    post:
+      summary: Update a summoner.
+      operationId: updateSummoner
+      tags:
+        - Summoner
+      responses:
+        '200':
+          description: Summoner successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummonerDTO'
+        '404':
+          description: Summoner not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /summoner/{tag}/{name}:
+    parameters:
+      - in: path
+        name: tag
+        schema:
+          type: string
+        required: true
+        description: The tag of the summoner.
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+        description: The name of the summoner.
+    get:
+      summary: Retrieve a summoner by its tag and its name.
+      operationId: getSummonerByTagAndName
+      tags:
+        - Summoner
+      responses:
+        '200':
+          description: Summoner successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummonerDTO'
+        '404':
+          description: Summoner not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /arena-completion/{puuid}:
+    parameters:
+      - in: path
+        name: puuid
+        schema:
+          type: string
+        required: true
+        description: The puuid of the summoner.
+    get:
+      summary: Retrieve the arena completion of the summoner.
+      operationId: getArenaCompletion
+      tags:
+        - Arena Completion
+      responses:
+        '200':
+          description: Arena completion successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArenaCompletionDTO'
+        '400':
+          description: Summoner need to be import first.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /mastery/{puuid}:
+    parameters:
+      - in: path
+        name: puuid
+        schema:
+          type: string
+        required: true
+        description: The puuid of the summoner.
+    get:
+      summary: Retrieve all summoner masteries.
+      operationId: getMasteries
+      tags:
+        - Mastery
+      responses:
+        '200':
+          description: Masteries successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MasteriesDTO'
+        '400':
+          description: Summoner need to be import first.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+    put:
+      summary: Update all summoner masteries.
+      operationId: updateMasteries
+      tags:
+        - Mastery
+      responses:
+        '200':
+          description: Masteries successfully updated.
+        '400':
+          description: Summoner not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /match/search:
+    post:
+      summary: Search paginated matches.
+      operationId: searchMatches
+      tags:
+        - Match
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchSearchRequestDTO'
+      responses:
+        '200':
+          description: Matches successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchPageDTO'
+        '400':
+          description: Invalid search request.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /match/{puuid}:
+    parameters:
+      - in: path
+        name: puuid
+        schema:
+          type: string
+        required: true
+        description: The puuid of the summoner.
+    put:
+      summary: Update all matches
+      operationId: updateMatches
+      tags:
+        - Match
+      responses:
+        '200':
+          description: Matches successfully updated.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /board/{boardId}:
+    parameters:
+      - in: path
+        name: boardId
+        schema:
+          type: string
+        required: true
+        description: The id of the board.
+    get:
+      summary: Retrieve a board by its id.
+      operationId: getBoard
+      tags:
+        - Board
+      responses:
+        '200':
+          description: Board successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoardDTO'
+        '404':
+          description: Board not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+    put:
+      summary: Update a board.
+      operationId: updateBoard
+      tags:
+        - Board
+      responses:
+        '200':
+          description: Board successfully updated.
+        '404':
+          description: Board not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+    patch:
+      summary: Update a board name or summoners order.
+      operationId: patchBoard
+      tags:
+        - Board
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoardUpdateRequestDTO'
+      responses:
+        '200':
+          description: Board successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoardDTO'
+        '400':
+          description: Invalid request parameters.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '404':
+          description: Board not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+    delete:
+      summary: Delete a board.
+      operationId: deleteBoard
+      tags:
+        - Board
+      responses:
+        '200':
+          description: Board successfully deleted.
+        '404':
+          description: Board not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /board/{boardId}/summoner/{puuid}:
+    parameters:
+      - in: path
+        name: boardId
+        schema:
+          type: string
+        required: true
+        description: The id of the board.
+      - in: path
+        name: puuid
+        schema:
+          type: string
+        required: true
+        description: The puuid of the summoner.
+    delete:
+      summary: Remove a summoner from a board.
+      operationId: removeSummonerFromBoard
+      tags:
+        - Board
+      responses:
+        '200':
+          description: Summoner successfully removed from the board.
+        '404':
+          description: Board not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /board/{boardId}/summoner/{tag}/{name}:
+    parameters:
+      - in: path
+        name: boardId
+        schema:
+          type: string
+        required: true
+        description: The id of the board.
+      - in: path
+        name: tag
+        schema:
+          type: string
+        required: true
+        description: The tag of the summoner.
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+        description: The name of the summoner.
+    post:
+      summary: Add a summoner to a board.
+      operationId: addSummonerToBoard
+      tags:
+        - Board
+      responses:
+        '200':
+          description: Summoner successfully added to the board.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummonerDTO'
+        '400':
+          description: Maximum number of summoners reached.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '404':
+          description: Board or summoner not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '409':
+          description: Summoner is already in this board.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+  /board:
+    post:
+      summary: Create a board.
+      operationId: createBoard
+      tags:
+        - Board
+      responses:
+        '201':
+          description: Board successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoardDTO'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailDTO'
+
+components:
+  schemas:
+    ProblemDetailDTO:
+      type: object
+      description: Standardized error response following RFC 9457 (Problem Details for HTTP APIs).
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+          example: "about:blank"
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+          example: "Not Found"
+        status:
+          type: integer
+          format: int32
+          description: The HTTP status code generated by the origin server.
+          example: 404
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+          example: "Le board board-123 n'existe pas"
+        instance:
+          type: string
+          format: uri
+          description: A URI reference that identifies the specific occurrence of the problem.
+          example: "/board/board-123"
+        errors:
+          type: array
+          description: Optional list of field validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: "name"
+              message:
+                type: string
+                example: "ne doit pas être vide"
+    MetadataDTO:
+      type: object
+      description: Entity representing current game season, patch, and historical patch information.
+      required:
+        - currentSeason
+        - currentPatch
+      properties:
+        currentSeason:
+          type: integer
+          format: int32
+          description: The current League of Legends season number.
+          example: 15
+        currentPatch:
+          type: string
+          description: The current game patch version.
+          example: "15.12"
+    QueueReferenceDTO:
+      type: object
+      required:
+        - id
+        - name
+        - description
+      description: Represents a queue with its reference.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the queue.
+          example: "RANKED_SOLO_5x5"
+        name:
+          type: string
+          description: The display name of the queue.
+          example: "Ranked Solo/Duo"
+        description:
+          type: string
+          description: A brief description of the queue.
+          example: "A competitive queue where players are matched individually or in pairs."
+    PatchDTO:
+      type: object
+      required:
+        - patchId
+        - language
+        - season
+        - champions
+        - items
+        - summonerSpells
+        - augments
+        - runes
+        - queues
+      description: Represents a specific game patch with its associated data.
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the LoL patch, typically a concatenation of patchId and language.
+          example: "14.12_en_US"
+        patchId:
+          type: string
+          description: The ID of the LoL patch.
+          example: "14.12"
+        language:
+          type: string
+          description: The language of the reference for this patch.
+          example: "en_US"
+        season:
+          type: integer
+          format: int32
+          description: The season number associated with this patch.
+          example: 15
+        champions:
+          type: array
+          description: List of champions and their reference for this patch.
+          items:
+            $ref: '#/components/schemas/ChampionReferenceDTO'
+        items:
+          type: array
+          description: List of items and their reference for this patch.
+          items:
+            $ref: '#/components/schemas/ItemReferenceDTO'
+        summonerSpells:
+          type: array
+          description: List of summoner spells and their reference for this patch.
+          items:
+            $ref: '#/components/schemas/SummonerSpellReferenceDTO'
+        augments:
+          type: array
+          description: List of augments and their reference for this patch.
+          items:
+            $ref: '#/components/schemas/AugmentReferenceDTO'
+        runes:
+          type: array
+          description: List of runes and their reference for this patch.
+          items:
+            $ref: '#/components/schemas/RuneReferenceDTO'
+        queues:
+          type: array
+          description: List of queues and their reference relevant to this patch.
+          items:
+            $ref: '#/components/schemas/QueueReferenceDTO'
+    ReferenceDTO:
+      type: object
+      description: Base reference.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the reference.
+          example: "Aatrox"
+        name:
+          type: string
+          description: The display name of the reference.
+          example: "Aatrox"
+        image:
+          type: string
+          description: URL or path to the image of the reference.
+          example: "https://example.com/aatrox.png"
+        description:
+          type: string
+          description: A brief description of the reference.
+          example: "The Darkin Blade"
+    ChampionReferenceDTO:
+      type: object
+      description: Represents a champion with its reference and details.
+      allOf:
+        - $ref: '#/components/schemas/ReferenceDTO'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the champion.
+          example: "Aatrox"
+        title:
+          type: string
+          description: The champion's title.
+          example: "the Darkin Blade"
+        stats:
+          type: object
+          description: A map of champion stats to their numerical values.
+          additionalProperties:
+            type: number
+            format: float
+          example:
+            hp: 650
+            ad: 60
+            armor: 38
+        tags:
+          type: array
+          description: A list of tags or roles associated with the champion.
+          items:
+            type: string
+          example: [ "Fighter", "Tank" ]
+    ItemReferenceDTO:
+      type: object
+      description: Represents an item with its reference and detailed properties.
+      allOf:
+        - $ref: '#/components/schemas/ReferenceDTO'
+      properties:
+        plainText:
+          type: string
+          description: A short description of the item's effects, often without detailed numbers.
+          example: "Increases Movement Speed"
+        baseGold:
+          type: integer
+          format: int32
+          description: The base gold cost of the item.
+          example: 300
+        totalGold:
+          type: integer
+          format: int32
+          description: The total gold cost of the item.
+          example: 300
+        tags:
+          type: array
+          description: A list of tags or categories associated with the item.
+          items:
+            type: string
+          example: [ "Boots", "Nonconsumable" ]
+        stats:
+          type: object
+          description: A map of item stats to their numerical values.
+          additionalProperties:
+            type: number
+            format: float
+          example:
+            FlatMovementSpeedMod: 25.0
+            FlatHPPoolMod: 0.0
+        toItems:
+          type: array
+          description: A list of item IDs that this item can build into.
+          items:
+            type: string
+          example: [ "3006", "3009" ]
+        fromItems:
+          type: array
+          description: A list of item IDs that this item is built from.
+          items:
+            type: string
+          example: [ "3006", "3009" ]
+    SummonerSpellReferenceDTO:
+      type: object
+      description: Represents a summoner spell with its reference and detailed properties.
+      allOf:
+        - $ref: '#/components/schemas/ReferenceDTO'
+      properties:
+        tooltip:
+          type: string
+          description: The detailed tooltip text of the summoner spell, often including scaling values.
+          example: "Teleports your champion to target nearby location. {{ cooldownBurn }} seconds cooldown."
+        cooldownBurn:
+          type: number
+          format: float
+          description: The cooldown duration of the summoner spell in seconds.
+          example: 300.0
+    AugmentReferenceDTO:
+      type: object
+      description: Represents an augment with its reference and data values.
+      allOf:
+        - $ref: '#/components/schemas/ReferenceDTO'
+      properties:
+        dataValues:
+          type: object
+          description: A map of key-value pairs representing various numerical data points associated with the augment.
+          additionalProperties:
+            type: array
+            items:
+              type: number
+              format: float
+          example:
+            BonusDamagePercent: [10]
+            HealthThreshold: [500]
+    RunePerkReferenceDTO:
+      type: object
+      description: Represents a specific rune perk.
+      allOf:
+        - $ref: '#/components/schemas/ReferenceDTO'
+      properties:
+        longDescription:
+          type: string
+          description: The detailed description of the rune perk.
+          example: "Gain 1-10 (based on level) adaptive force for 10 seconds after damaging a champion. Stacks up to 5 times. Max stacks: 5-50 (based on level) adaptive force."
+    RuneReferenceDTO:
+      type: object
+      description: Represents a rune path with its associated perks.
+      allOf:
+        - $ref: '#/components/schemas/ReferenceDTO'
+      properties:
+        perks:
+          type: array
+          description: Nested list of rune perks, representing the different rows/choices within the rune path.
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/RunePerkReferenceDTO'
+          example:
+            - id: "Conqueror"
+              name: "Conqueror"
+              image: "https://example.com/conqueror.png"
+              description: "Gain Adaptive Force on hit."
+              longDescription: "Attacks and spell hits grant 1.2-4.2 Adaptive Force for 5s (max 10 stacks). At max stacks, heal for 8% of damage dealt to champions."
+            - id: "PressTheAttack"
+              name: "Press the Attack"
+              image: "https://example.com/presstheattack.png"
+              description: "Hitting a champion 3 times deals bonus damage and makes them vulnerable."
+              longDescription: "Hitting an enemy champion 3 consecutive times deals 40-180 bonus Adaptive Damage and makes them vulnerable, increasing the damage they take by 8% from all sources for 6s."
+    RanksDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/SeasonRanksDTO'
+    SeasonRanksDTO:
+      type: object
+      properties:
+        season:
+          type: integer
+          format: int32
+          description: The season number.
+          example: 2024
+        queueRanks:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueueRanksDTO'
+      required:
+        - season
+    QueueRanksDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the queue.
+          example: "RANKED_SOLO_5x5"
+        rankInformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RankInformationsDTO'
+      required:
+        - name
+    RankInformationsDTO:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: The date and time of the rank information.
+          example: "2023-10-27T10:00:00Z"
+        tier:
+          type: string
+          description: The rank tier.
+          example: "DIAMOND"
+        rank:
+          type: string
+          description: The division within the tier.
+          example: "IV"
+        leaguePoints:
+          type: integer
+          format: int32
+          description: The current league points.
+          example: 75
+        wins:
+          type: integer
+          format: int32
+          description: The number of wins in the current season for this queue.
+          example: 150
+        losses:
+          type: integer
+          format: int32
+          description: The number of losses in the current season for this queue.
+          example: 120
+      required:
+        - date
+        - tier
+        - rank
+        - leaguePoints
+        - wins
+        - losses
+    SummonerDTO:
+      type: object
+      properties:
+        puuid:
+          type: string
+          description: Unique identifier for the player.
+          example: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+        name:
+          type: string
+          description: The summoner's in-game name.
+          example: "SummonerName"
+        level:
+          type: integer
+          format: int32
+          description: The summoner's current level.
+          example: 123
+        icon:
+          type: string
+          description: The ID of the summoner icon.
+          example: "29"
+        tag:
+          type: string
+          description: The summoner's in-game tag.
+          example: "#EUW"
+        region:
+          type: string
+          description: The region where the summoner plays.
+          example: "euw1"
+        updateDate:
+          type: string
+          format: date-time
+          description: The last date and time this summoner's data was updated.
+          example: "2025-06-29T22:13:09Z"
+        spentTime:
+          type: integer
+          format: int64
+          description: Cumulative time spent by the summoner in game.
+          example: 1234567890
+        playedSeasonsOrSets:
+          type: array
+          uniqueItems: true
+          items:
+            type: integer
+            format: int32
+          description: A set of unique identifiers corresponding to seasons the summoner has participated in.
+          example: [ 1, 2, 3, 5 ]
+      required:
+        - puuid
+        - name
+        - level
+        - icon
+        - region
+        - updateDate
+    MatchSummonerDTO:
+      type: object
+      properties:
+        puuid:
+          type: string
+          description: Unique identifier for the player.
+          example: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+        name:
+          type: string
+          description: The summoner's in-game name.
+          example: "SummonerName"
+        level:
+          type: integer
+          format: int32
+          description: The summoner's current level.
+          example: 123
+        icon:
+          type: string
+          description: The ID of the summoner icon.
+          example: "29"
+        tag:
+          type: string
+          description: The summoner's in-game tag.
+          example: "#EUW"
+    BoardDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the board.
+          example: "board_12345"
+        puuids:
+          type: array
+          items:
+            type: string
+          description: A list of PUUIDs associated with this board.
+          example:
+            - "puuid1"
+            - "puuid2"
+        updateDate:
+          type: string
+          format: date-time
+          description: The last date and time this board's data was updated.
+          example: "2025-06-29T23:26:26Z"
+        name:
+          type: string
+          description: The name of the board.
+          example: "My Custom Board"
+    BoardUpdateRequestDTO:
+      type: object
+      description: Request payload to partially update a board.
+      properties:
+        name:
+          type: string
+          description: The new display name of the board.
+          minLength: 1
+          maxLength: 50
+          example: "My Updated Board"
+    ArenaCompletionDTO:
+      type: array
+      uniqueItems: true
+      items:
+        type: string
+        description: The list of all champions with whom a match was won in arena.
+    MasteriesDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/MasteryDTO'
+    MasteryDTO:
+      type: object
+      properties:
+        level:
+          type: integer
+          format: int32
+          description: The mastery level of the champion
+          example: 7
+        points:
+          type: integer
+          format: int32
+          description: The total mastery points for the champion
+          example: 250000
+        champion:
+          type: string
+          description: The ID of the champion
+          example: "Yasuo"
+        lastPlayTime:
+          type: string
+          format: date-time
+          description: The last time the champion was played
+          example: "2024-06-28T10:30:00Z"
+      required:
+        - level
+        - points
+        - champion
+        - lastPlayTime
+    ParticipantDTO:
+      type: object
+      properties:
+        champLevel:
+          type: integer
+          format: int32
+          description: The participant's champion level.
+          example: 345
+        kills:
+          type: integer
+          format: int32
+          description: Number of kills by the participant.
+          example: 12
+        assists:
+          type: integer
+          format: int32
+          description: Number of assists by the participant.
+          example: 4
+        deaths:
+          type: integer
+          format: int32
+          description: Number of deaths by the participant.
+          example: 2
+        role:
+          type: string
+          description: The participant's role in the game.
+          example: "jungle"
+        visionScore:
+          type: integer
+          format: int32
+          description: The participant's vision score.
+          example: 40
+        minions:
+          type: integer
+          format: int32
+          description: Total minions killed by the participant.
+          example: 203
+        neutralMinions:
+          type: integer
+          format: int32
+          description: Total neutral minions (jungle monsters) killed by the participant.
+          example: 110
+        doubleKills:
+          type: integer
+          format: int32
+          description: Number of double kills.
+          example: 2
+        tripleKills:
+          type: integer
+          format: int32
+          description: Number of triple kills.
+          example: 1
+        quadraKills:
+          type: integer
+          format: int32
+          description: Number of quadra kills.
+          example: 1
+        pentaKills:
+          type: integer
+          format: int32
+          description: Number of penta kills.
+          example: 1
+        physicalDamageDealtToChampions:
+          type: integer
+          format: int32
+          description: Physical damage dealt to champions.
+          example: 45020
+        magicDamageDealtToChampions:
+          type: integer
+          format: int32
+          description: Magic damage dealt to champions.
+          example: 12789
+        trueDamageDealtToChampions:
+          type: integer
+          format: int32
+          description: True damage dealt to champions.
+          example: 490
+        physicalDamageTaken:
+          type: integer
+          format: int32
+          description: Physical damage taken.
+          example: 19493
+        magicDamageTaken:
+          type: integer
+          format: int32
+          description: Magic damage taken.
+          example: 34928
+        trueDamageTaken:
+          type: integer
+          format: int32
+          description: True damage taken.
+          example: 1342
+        golds:
+          type: integer
+          format: int32
+          description: Total gold earned.
+          example: 20194
+        gameEndedInEarlySurrender:
+          type: boolean
+          description: Indicates if the game ended in an early surrender for this participant's team.
+          example: false
+        runes:
+          $ref: '#/components/schemas/RunesDTO'
+        champion:
+          type: string
+          description: The ID or name of the champion played.
+          example: "122"
+        item0:
+          type: string
+          description: ID or name of item slot 0.
+          example: "101"
+        item1:
+          type: string
+          description: ID or name of item slot 1.
+          example: "2870"
+        item2:
+          type: string
+          description: ID or name of item slot 2.
+          example: "1300"
+        item3:
+          type: string
+          description: ID or name of item slot 3.
+          example: "4900"
+        item4:
+          type: string
+          description: ID or name of item slot 4.
+          example: "3170"
+        item5:
+          type: string
+          description: ID or name of item slot 5.
+          example: "5600"
+        ward:
+          type: string
+          description: ID or name of the ward item.
+          example: "120"
+        summoner:
+          $ref: '#/components/schemas/MatchSummonerDTO'
+        summonerSpell1:
+          type: string
+          description: ID or name of the first summoner spell.
+          example: "4"
+        summonerSpell2:
+          type: string
+          description: ID or name of the second summoner spell.
+          example: "12"
+        placement:
+          type: integer
+          format: int32
+          description: Participant's placement.
+          example: 2
+        augment1:
+          type: string
+          description: ID or name of the first augment.
+          example: "24"
+        augment2:
+          type: string
+          description: ID or name of the second augment.
+          example: "53"
+        augment3:
+          type: string
+          description: ID or name of the third augment.
+          example: "28"
+        augment4:
+          type: string
+          description: ID or name of the fourth augment.
+          example: "144"
+        augment5:
+          type: string
+          description: ID or name of the fifth augment.
+          example: "160"
+        augment6:
+          type: string
+          description: ID or name of the sixth augment.
+          example: "120"
+    ObjectivesDTO:
+      type: object
+      properties:
+        baronKills:
+          type: integer
+          format: int32
+          description: Number of Baron Nashor kills.
+          example: 1
+        championKills:
+          type: integer
+          format: int32
+          description: Number of champion kills.
+          example: 34
+        dragonKills:
+          type: integer
+          format: int32
+          description: Number of Dragon kills.
+          example: 4
+        hordeKills:
+          type: integer
+          format: int32
+          description: Number of Void Grub kills.
+          example: 5
+        inhibitorKills:
+          type: integer
+          format: int32
+          description: Number of Inhibitor kills.
+          example: 3
+        riftHeraldKills:
+          type: integer
+          format: int32
+          description: Number of Rift Herald kills.
+          example: 1
+        towerKills:
+          type: integer
+          format: int32
+          description: Number of Tower kills.
+          example: 7
+        atakhanKills:
+          type: integer
+          format: int32
+          description: Number of Atakhan kills.
+          example: 1
+    TeamDTO:
+      type: object
+      properties:
+        objectives:
+          $ref: '#/components/schemas/ObjectivesDTO'
+        hasWin:
+          type: boolean
+          description: Indicates if the team won the game.
+          example: true
+        id:
+          type: string
+          description: The ID of the team.
+          example: "1"
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipantDTO'
+          description: List of individual participants in the match.
+        bans:
+          type: array
+          items:
+            type: string
+          description: List of champion IDs or names banned by this team.
+          example:
+            - "Yasuo"
+            - "Zed"
+            - "LeeSin"
+            - "Aatrox"
+        placement:
+          type: integer
+          format: int32
+          description: The team's final placement in the game.
+          example: 1
+    MatchDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the match.
+          example: "EUW1_694207890"
+        version:
+          type: string
+          description: The game version the match was played on.
+          example: "14.12.569.8398"
+        season:
+          type: integer
+          format: int32
+          description: The game season the match was played on.
+          example: 14
+        datetime:
+          type: string
+          format: date-time
+          description: Date and time when the match started.
+          example: "2025-06-30T16:00:00Z"
+        duration:
+          type: integer
+          format: int64
+          description: Duration of the game in seconds.
+          example: 2450
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamDTO'
+          description: List of teams participating in the match.
+        remake:
+          type: boolean
+          description: Indicates if the game was a remake.
+          example: false
+        queue:
+          type: string
+          description: The ID or name of the game queue.
+          example: "420"
+    RunesDTO:
+      type: object
+      description: Represents all selected runes.
+      properties:
+        stats:
+          $ref: '#/components/schemas/RunesStatsDTO'
+        runeCategories:
+          type: array
+          description: Represents all selected runes categories.
+          items:
+            $ref: '#/components/schemas/RuneCategoryDTO'
+      required:
+        - stats
+        - runeCategories
+    RunesStatsDTO:
+      type: object
+      description: Represents the stat shards selected.
+      properties:
+        defense:
+          type: string
+          description: Defense stat shard ID.
+          example: "5001"
+        flex:
+          type: string
+          description: Flex stat shard ID.
+          example: "5008"
+        offense:
+          type: string
+          description: Offense stat shard ID.
+          example: "5005"
+      required:
+        - defense
+        - flex
+        - offense
+    RuneCategoryDTO:
+      type: object
+      description: Represents a selected rune category.
+      properties:
+        style:
+          type: string
+          description: Represents the style id of the style category.
+          example: "Précision"
+        perks:
+          type: array
+          description: A list of all selected perks.
+          items:
+            type: string
+      required:
+        - style
+        - perks
+    PageRequestDTO:
+      type: object
+      description: Base pagination request parameters.
+      required:
+        - pageNumber
+        - pageSize
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          description: Current page number.
+          example: 0
+        pageSize:
+          type: integer
+          format: int32
+          default: 10
+          minimum: 1
+          description: Number of elements per page.
+          example: 10
+    PageDTO:
+      type: object
+      description: Base pagination response metadata.
+      required:
+        - pageNumber
+        - pageSize
+        - totalElements
+        - totalPages
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+          description: Current page number (0-indexed).
+          example: 0
+        pageSize:
+          type: integer
+          format: int32
+          description: Number of elements per page.
+          example: 10
+        totalElements:
+          type: integer
+          format: int64
+          description: Total number of elements matching the criteria.
+          example: 42
+        totalPages:
+          type: integer
+          format: int32
+          description: Total number of available pages.
+          example: 5
+    MatchSearchRequestDTO:
+      description: Search criteria and pagination for matches.
+      allOf:
+        - $ref: '#/components/schemas/PageRequestDTO'
+        - type: object
+          properties:
+            searchCriteria:
+              $ref: '#/components/schemas/MatchSearchCriteriaDTO'
+    MatchSearchCriteriaDTO:
+      type: object
+      description: Search criteria for matches.
+      properties:
+        puuid:
+          type: string
+          description: The puuid of the summoner.
+          example: "OuXbh5J3r5AhEXP7-yvlgibfYpi1eqRxC_najyra9KsPAw8mo4xblx93h9T5TQdtb7fR5CUYHEiBKw"
+        queue:
+          $ref: '#/components/schemas/QueueDTO'
+        role:
+          $ref: '#/components/schemas/RoleDTO'
+        season:
+          type: integer
+          format: int32
+          description: Optional season filter.
+          example: 16
+    MatchPageDTO:
+      description: Paginated list of matches.
+      allOf:
+        - $ref: '#/components/schemas/PageDTO'
+        - type: object
+          required:
+            - content
+          properties:
+            content:
+              type: array
+              description: List of matches on the current page.
+              items:
+                $ref: '#/components/schemas/MatchDTO'
+    QueueDTO:
+      type: string
+      description: Filter category for game queues.
+      enum:
+        - NORMAL
+        - SOLO_RANKED
+        - FLEX_RANKED
+        - ARAM
+        - URF
+        - ARURF
+        - NEXUS_BLITZ
+        - ONE_FOR_ALL
+        - ULTIMATE_SPELLBOOK
+        - ARENA
+        - DOOM_BOTS
+        - CLASH
+        - BRAWL
+        - SWARM
+    RoleDTO:
+      type: string
+      description: Player role in the game.
+      enum:
+        - TOP
+        - JUNGLE
+        - MIDDLE
+        - BOTTOM
+        - SUPPORT

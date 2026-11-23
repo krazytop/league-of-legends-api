@@ -2,11 +2,8 @@ package com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo;
 
 import com.krazytop.leagueoflegends.domain.model.QueueRanks;
 import com.krazytop.leagueoflegends.domain.model.RankInformations;
-import com.krazytop.leagueoflegends.domain.model.SeasonOrSetRanks;
-import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.QueueRanksSubdocument;
-import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.RankInformationsSubdocument;
-import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.RanksDocument;
-import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.SeasonOrSetRanksSubdocument;
+import com.krazytop.leagueoflegends.domain.model.SeasonRanks;
+import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.*;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.mapper.RankMongoMapper;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.repository.RankMongoRepository;
 import org.junit.jupiter.api.Test;
@@ -55,8 +52,8 @@ class RankMongoAdapterTest {
                 .setName("RANKED_SOLO_5x5")
                 .setRankInformations(List.of(rankInfoSubdoc));
 
-        SeasonOrSetRanksSubdocument seasonSubdoc = new SeasonOrSetRanksSubdocument()
-                .setSeasonOrSetNumber(16)
+        SeasonRanksSubdocument seasonSubdoc = new SeasonRanksSubdocument()
+                .setSeason(16)
                 .setQueueRanks(List.of(queueRanksSubdoc));
 
         RanksDocument document = new RanksDocument()
@@ -75,14 +72,14 @@ class RankMongoAdapterTest {
                 .setName("RANKED_SOLO_5x5")
                 .setRankInformations(List.of(expectedRankInfo));
 
-        SeasonOrSetRanks expectedSeasonRanks = new SeasonOrSetRanks()
-                .setSeasonOrSetNumber(16)
+        SeasonRanks expectedSeasonRanks = new SeasonRanks()
+                .setSeason(16)
                 .setQueueRanks(List.of(expectedQueueRanks));
 
         when(repository.findByPuuid(puuid)).thenReturn(Optional.of(document));
 
         // Act
-        List<SeasonOrSetRanks> result = rankMongoAdapter.findRanks(puuid);
+        List<SeasonRanks> result = rankMongoAdapter.findRanks(puuid);
 
         // Assert
         assertThat(result)
@@ -98,7 +95,7 @@ class RankMongoAdapterTest {
         when(repository.findByPuuid(puuid)).thenReturn(Optional.empty());
 
         // Act
-        List<SeasonOrSetRanks> result = rankMongoAdapter.findRanks(puuid);
+        List<SeasonRanks> result = rankMongoAdapter.findRanks(puuid);
 
         // Assert
         assertThat(result).isEmpty();
@@ -123,8 +120,8 @@ class RankMongoAdapterTest {
                 .setName("RANKED_SOLO_5x5")
                 .setRankInformations(List.of(rankInfo));
 
-        SeasonOrSetRanks seasonRanks = new SeasonOrSetRanks()
-                .setSeasonOrSetNumber(16)
+        SeasonRanks seasonRanks = new SeasonRanks()
+                .setSeason(16)
                 .setQueueRanks(List.of(queueRanks));
 
         RankInformationsSubdocument expectedRankInfoSubdoc = new RankInformationsSubdocument()
@@ -139,8 +136,8 @@ class RankMongoAdapterTest {
                 .setName("RANKED_SOLO_5x5")
                 .setRankInformations(List.of(expectedRankInfoSubdoc));
 
-        SeasonOrSetRanksSubdocument expectedSeasonSubdoc = new SeasonOrSetRanksSubdocument()
-                .setSeasonOrSetNumber(16)
+        SeasonRanksSubdocument expectedSeasonSubdoc = new SeasonRanksSubdocument()
+                .setSeason(16)
                 .setQueueRanks(List.of(expectedQueueRanksSubdoc));
 
         RanksDocument expectedDocument = new RanksDocument()

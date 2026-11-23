@@ -12,7 +12,7 @@ public class MetadataService {
     private final MetadataRepositoryPort repositoryPort;
 
     /**
-     * Récupère les métadonnées actuelles de League of Legends nécessaire au bon fonctionnement de l'application
+     * Récupère les métadonnées actuelles de League of Legends nécessaire au bon fonctionnement de l'application.
      *
      * @return les métadonnées actuelles
      */
@@ -21,7 +21,7 @@ public class MetadataService {
     }
 
     /**
-     * Récupère le numéro de la saison actuelle
+     * Récupère le numéro de la saison actuelle.
      *
      * @return le numéro de la saison actuelle
      */

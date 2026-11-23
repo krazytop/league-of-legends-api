@@ -2,9 +2,8 @@ package com.krazytop.leagueoflegends.domain.service;
 
 import com.krazytop.leagueoflegends.domain.exception.ResourceNotFoundException;
 import com.krazytop.leagueoflegends.domain.model.Account;
-import com.krazytop.leagueoflegends.domain.model.EnumGlobalRegion;
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.Summoner;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.port.out.account.AccountRiotPort;
 import com.krazytop.leagueoflegends.domain.port.out.summoner.SummonerRepositoryPort;
 import com.krazytop.leagueoflegends.domain.port.out.summoner.SummonerRiotPort;
@@ -24,9 +23,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SummonerServiceTest {
@@ -60,12 +57,12 @@ class SummonerServiceTest {
                 .setTag("EUW")
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         when(repositoryPort.findSummoner(puuid)).thenReturn(Optional.of(storedSummoner));
 
         // Act
-        Summoner result = summonerService.getSummoner(puuid);
+        Summoner result = summonerService.getOrFetchSummoner(puuid);
 
         // Assert
         assertThat(result).isEqualTo(storedSummoner);
@@ -86,10 +83,10 @@ class SummonerServiceTest {
         Summoner riotSummoner = new Summoner()
                 .setPuuid(puuid)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         when(repositoryPort.findSummoner(puuid)).thenReturn(Optional.empty());
-        when(accountRiotPort.fetchAccount(EnumGlobalRegion.EUROPE, puuid)).thenReturn(Optional.of(account));
+        when(accountRiotPort.fetchAccount(puuid)).thenReturn(Optional.of(account));
         when(summonerRiotPort.fetchSummoner(EnumRegion.EUW1, puuid)).thenReturn(Optional.of(riotSummoner));
 
         Summoner expectedSummoner = new Summoner()
@@ -98,10 +95,10 @@ class SummonerServiceTest {
                 .setTag("EUW")
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         // Act
-        Summoner result = summonerService.getSummoner(puuid);
+        Summoner result = summonerService.getOrFetchSummoner(puuid);
 
         // Assert
         assertThat(result)
@@ -114,10 +111,10 @@ class SummonerServiceTest {
         // Arrange
         String puuid = "unknown-puuid";
         when(repositoryPort.findSummoner(puuid)).thenReturn(Optional.empty());
-        when(accountRiotPort.fetchAccount(EnumGlobalRegion.EUROPE, puuid)).thenReturn(Optional.empty());
+        when(accountRiotPort.fetchAccount(puuid)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThatThrownBy(() -> summonerService.getSummoner(puuid))
+        assertThatThrownBy(() -> summonerService.getOrFetchSummoner(puuid))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("L'invocateur avec le puuid unknown-puuid n'existe pas");
         verifyNoInteractions(summonerRiotPort);
@@ -134,11 +131,11 @@ class SummonerServiceTest {
                 .setRegion(EnumRegion.EUW1);
 
         when(repositoryPort.findSummoner(puuid)).thenReturn(Optional.empty());
-        when(accountRiotPort.fetchAccount(EnumGlobalRegion.EUROPE, puuid)).thenReturn(Optional.of(account));
+        when(accountRiotPort.fetchAccount(puuid)).thenReturn(Optional.of(account));
         when(summonerRiotPort.fetchSummoner(EnumRegion.EUW1, puuid)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThatThrownBy(() -> summonerService.getSummoner(puuid))
+        assertThatThrownBy(() -> summonerService.getOrFetchSummoner(puuid))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("L'invocateur avec le puuid valorant-only-puuid n'existe pas");
     }
@@ -154,12 +151,12 @@ class SummonerServiceTest {
                 .setTag(tag)
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         when(repositoryPort.findSummoner(tag, name)).thenReturn(Optional.of(storedSummoner));
 
         // Act
-        Summoner result = summonerService.getSummoner(tag, name);
+        Summoner result = summonerService.getOrFetchSummoner(tag, name);
 
         // Assert
         assertThat(result).isEqualTo(storedSummoner);
@@ -182,10 +179,10 @@ class SummonerServiceTest {
         Summoner riotSummoner = new Summoner()
                 .setPuuid(puuid)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         when(repositoryPort.findSummoner(tag, name)).thenReturn(Optional.empty());
-        when(accountRiotPort.fetchAccount(EnumGlobalRegion.EUROPE, name, tag)).thenReturn(Optional.of(account));
+        when(accountRiotPort.fetchAccount(name, tag)).thenReturn(Optional.of(account));
         when(summonerRiotPort.fetchSummoner(EnumRegion.EUW1, puuid)).thenReturn(Optional.of(riotSummoner));
 
         Summoner expectedSummoner = new Summoner()
@@ -194,10 +191,10 @@ class SummonerServiceTest {
                 .setTag(tag)
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         // Act
-        Summoner result = summonerService.getSummoner(tag, name);
+        Summoner result = summonerService.getOrFetchSummoner(tag, name);
 
         // Assert
         assertThat(result)
@@ -211,13 +208,63 @@ class SummonerServiceTest {
         String tag = "EUW";
         String name = "Unknown";
         when(repositoryPort.findSummoner(tag, name)).thenReturn(Optional.empty());
-        when(accountRiotPort.fetchAccount(EnumGlobalRegion.EUROPE, name, tag)).thenReturn(Optional.empty());
+        when(accountRiotPort.fetchAccount(name, tag)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThatThrownBy(() -> summonerService.getSummoner(tag, name))
+        assertThatThrownBy(() -> summonerService.getOrFetchSummoner(tag, name))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("L'invocateur Unknown #EUW n'existe pas");
         verifyNoInteractions(summonerRiotPort);
+    }
+
+    @Test
+    void getSummoner_shouldReturnSummoner() throws ResourceNotFoundException {
+        // Arrange
+        String puuid = "test-puuid";
+        Summoner summoner = new Summoner()
+                .setPuuid(puuid);
+
+        when(repositoryPort.findSummoner(puuid)).thenReturn(Optional.of(summoner));
+
+        // Act
+        Summoner result = summonerService.getSummoner(puuid);
+
+        // Assert
+        assertThat(result).isEqualTo(summoner);
+        verify(repositoryPort).findSummoner(puuid);
+    }
+
+    @Test
+    void getSummoner_shouldThrowResourceNotFoundException_whenSummonerDoesNotExist() {
+        // Arrange
+        String puuid = "unknown-puuid";
+
+        when(repositoryPort.findSummoner(puuid)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> summonerService.getSummoner(puuid))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("L'invocateur doit être importé avant de faire cette action");
+
+        verify(repositoryPort).findSummoner(puuid);
+    }
+
+    @Test
+    void getSummonerRegion_shouldReturnRegion() throws ResourceNotFoundException {
+        // Arrange
+        String puuid = "test-puuid";
+        Summoner summoner = new Summoner()
+                .setPuuid(puuid)
+                .setRegion(EnumRegion.EUW1);
+
+        when(repositoryPort.findSummoner(puuid)).thenReturn(Optional.of(summoner));
+
+        // Act
+        EnumRegion result = summonerService.getSummonerRegion(puuid);
+
+        // Assert
+        assertThat(result).isEqualTo(EnumRegion.EUW1);
+        verify(repositoryPort).findSummoner(puuid);
     }
 
     @Test
@@ -233,9 +280,9 @@ class SummonerServiceTest {
         Summoner riotSummoner = new Summoner()
                 .setPuuid(puuid)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
-        when(accountRiotPort.fetchAccount(EnumGlobalRegion.EUROPE, puuid)).thenReturn(Optional.of(account));
+        when(accountRiotPort.fetchAccount(puuid)).thenReturn(Optional.of(account));
         when(summonerRiotPort.fetchSummoner(EnumRegion.EUW1, puuid)).thenReturn(Optional.of(riotSummoner));
         when(repositoryPort.findSummoner(puuid)).thenReturn(Optional.empty());
         when(repositoryPort.saveSummoner(any(Summoner.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -246,7 +293,7 @@ class SummonerServiceTest {
                 .setTag("EUW")
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567)
+                .setIcon("4567")
                 .setUpdateDate(FIXED_INSTANT);
 
         // Act
@@ -274,7 +321,7 @@ class SummonerServiceTest {
         Summoner riotSummoner = new Summoner()
                 .setPuuid(puuid)
                 .setLevel(452)
-                .setIcon(9999);
+                .setIcon("9999");
 
         Summoner existingSummoner = new Summoner()
                 .setPuuid(puuid)
@@ -282,12 +329,12 @@ class SummonerServiceTest {
                 .setTag("EUW")
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567)
+                .setIcon("4567")
                 .setUpdateDate(Instant.parse("2026-10-01T10:00:00Z"))
                 .setSpentTime(123456L)
                 .setPlayedSeasons(Set.of(13, 14, 15));
 
-        when(accountRiotPort.fetchAccount(EnumGlobalRegion.EUROPE, puuid)).thenReturn(Optional.of(updatedAccount));
+        when(accountRiotPort.fetchAccount(puuid)).thenReturn(Optional.of(updatedAccount));
         when(summonerRiotPort.fetchSummoner(EnumRegion.EUW1, puuid)).thenReturn(Optional.of(riotSummoner));
         when(repositoryPort.findSummoner(puuid)).thenReturn(Optional.of(existingSummoner));
         when(repositoryPort.saveSummoner(any(Summoner.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -298,7 +345,7 @@ class SummonerServiceTest {
                 .setTag("FR1")
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(452)
-                .setIcon(9999)
+                .setIcon("9999")
                 .setUpdateDate(FIXED_INSTANT)
                 .setSpentTime(123456L)
                 .setPlayedSeasons(Set.of(13, 14, 15));
@@ -313,5 +360,20 @@ class SummonerServiceTest {
                 .usingRecursiveComparison()
                 .isEqualTo(expectedSavedSummoner);
         assertThat(result).isEqualTo(captor.getValue());
+    }
+
+    @Test
+    void saveSummoner() {
+        // Arrange
+        Summoner summoner = new Summoner().setPuuid("test-puuid");
+
+        when(repositoryPort.saveSummoner(summoner)).thenReturn(summoner);
+
+        // Act
+        Summoner result = summonerService.saveSummoner(summoner);
+
+        // Then
+        assertThat(result).isEqualTo(summoner);
+        verify(repositoryPort).saveSummoner(summoner);
     }
 }

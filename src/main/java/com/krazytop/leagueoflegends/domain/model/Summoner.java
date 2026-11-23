@@ -1,5 +1,7 @@
 package com.krazytop.leagueoflegends.domain.model;
 
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.match.Match;
 import lombok.Data;
 
 import java.time.Instant;
@@ -12,7 +14,7 @@ public class Summoner {
     private String puuid;
     private String name;
     private int level;
-    private int icon;
+    private String icon;
     private String tag;
     private EnumRegion region;
     private Instant updateDate;
@@ -29,5 +31,15 @@ public class Summoner {
         return this.setName(account.getName())
                 .setTag(account.getTag())
                 .setRegion(account.getRegion());
+    }
+
+    /**
+     * Met à jour le modèle après un nouveau match joué par l'invocateur
+     *
+     * @param match le nouveau match joué
+     */
+    public void updateWith(Match match) {
+        this.spentTime += match.getDuration();
+        this.playedSeasons.add(match.getSeason());
     }
 }

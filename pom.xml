@@ -218,7 +218,7 @@
                                 <additionalModelTypeAnnotations>
                                     @lombok.AllArgsConstructor
                                     @lombok.NoArgsConstructor
-                                    @lombok.Data
+                                    @lombok.Setter
                                     @lombok.experimental.Accessors(chain = true)
                                 </additionalModelTypeAnnotations>
                                 <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>

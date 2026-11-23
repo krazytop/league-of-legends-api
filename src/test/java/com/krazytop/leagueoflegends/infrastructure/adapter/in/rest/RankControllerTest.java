@@ -2,12 +2,12 @@ package com.krazytop.leagueoflegends.infrastructure.adapter.in.rest;
 
 import com.krazytop.leagueoflegends.domain.model.QueueRanks;
 import com.krazytop.leagueoflegends.domain.model.RankInformations;
-import com.krazytop.leagueoflegends.domain.model.SeasonOrSetRanks;
+import com.krazytop.leagueoflegends.domain.model.SeasonRanks;
 import com.krazytop.leagueoflegends.domain.service.RankService;
 import com.krazytop.leagueoflegends.infrastructure.adapter.in.rest.mapper.RankRestMapper;
 import com.krazytop.leagueoflegends.model.generated.QueueRanksDTO;
 import com.krazytop.leagueoflegends.model.generated.RankInformationsDTO;
-import com.krazytop.leagueoflegends.model.generated.SeasonOrSetRanksDTO;
+import com.krazytop.leagueoflegends.model.generated.SeasonRanksDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -55,8 +55,8 @@ class RankControllerTest {
                 .setName("RANKED_SOLO_5x5")
                 .setRankInformations(List.of(rankInfo));
 
-        SeasonOrSetRanks seasonRanks = new SeasonOrSetRanks()
-                .setSeasonOrSetNumber(16)
+        SeasonRanks seasonRanks = new SeasonRanks()
+                .setSeason(16)
                 .setQueueRanks(List.of(queueRanks));
 
         RankInformationsDTO expectedRankInfoDto = new RankInformationsDTO()
@@ -71,14 +71,14 @@ class RankControllerTest {
                 .setName("RANKED_SOLO_5x5")
                 .setRankInformations(List.of(expectedRankInfoDto));
 
-        SeasonOrSetRanksDTO expectedSeasonRanksDto = new SeasonOrSetRanksDTO()
-                .setSeasonOrSetNumber(16)
+        SeasonRanksDTO expectedSeasonRanksDto = new SeasonRanksDTO()
+                .setSeason(16)
                 .setQueueRanks(List.of(expectedQueueRanksDto));
 
         when(service.getRanks(puuid)).thenReturn(List.of(seasonRanks));
 
         // Act
-        ResponseEntity<List<SeasonOrSetRanksDTO>> response = rankController.getRanks(puuid);
+        ResponseEntity<List<SeasonRanksDTO>> response = rankController.getRanks(puuid);
 
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

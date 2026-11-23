@@ -3,6 +3,7 @@ package com.krazytop.leagueoflegends.cucumber.steps;
 import com.fasterxml.jackson.databind.JavaType;
 import com.krazytop.leagueoflegends.cucumber.LeagueOfLegendsIT;
 import io.cucumber.java.fr.Alors;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
@@ -16,6 +17,14 @@ public class VerificationBddStep extends LeagueOfLegendsIT {
         List<?> actualDocuments = mongoTemplate.findAll(documentClass, collectionName);
 
         assertThat(actualDocuments).isEmpty();
+    }
+
+    @Alors("la collection {string} contient {int} documents")
+    @Alors("la collection {string} contient {int} document")
+    public void verifyCollectionHasDocumentCount(String collectionName, int expectedDocumentsCount) {
+        long actualDocumentsCount = mongoTemplate.count(new Query(), collectionName);
+
+        assertThat(actualDocumentsCount).isEqualTo(expectedDocumentsCount);
     }
 
     @Alors("la collection {string} contient uniquement le document suivant :")
@@ -44,6 +53,8 @@ public class VerificationBddStep extends LeagueOfLegendsIT {
         List<?> expectedDocuments = objectMapper.readValue(expectedJson, listType);
 
         List<?> actualDocuments = mongoTemplate.findAll(documentClass, collectionName);
+
+        assertThat(actualDocuments.get(1)).usingRecursiveComparison().ignoringCollectionOrder().isEqualTo(expectedDocuments.get(1));
 
         assertThat(actualDocuments)
                 .hasSameSizeAs(expectedDocuments)

@@ -1,5 +1,6 @@
 package com.krazytop.leagueoflegends.domain.model;
 
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import lombok.Data;
 
 @Data

@@ -13,5 +13,5 @@ public class RanksDocument {
 
     @Id
     private String puuid;
-    private List<SeasonOrSetRanksSubdocument> seasonOrSetRanks = new ArrayList<>();
+    private List<SeasonRanksSubdocument> seasonOrSetRanks = new ArrayList<>();
 }

@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface PatchRepositoryPort {
 
     /**
-     * Récupère le patch pour une version et une langue précises depuis la BDD
+     * Récupère le patch pour une version et une langue précises depuis la BDD.
      *
      * @param patchId l'id du patch
      * @param language la langue voulue

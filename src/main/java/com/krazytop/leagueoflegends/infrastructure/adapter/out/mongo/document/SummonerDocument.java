@@ -1,5 +1,6 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document;
 
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,10 @@ public class SummonerDocument {
     @Id
     private String puuid;
     private String name;
-    private Integer level;
-    private Integer icon;
+    private int level;
+    private String icon;
     private String tag;
-    private String region;
+    private EnumRegion region;
     private Instant updateDate;
     private long spentTime;
     private Set<Integer> playedSeasons = new HashSet<>();

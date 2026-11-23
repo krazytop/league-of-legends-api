@@ -38,7 +38,7 @@ class MetadataControllerTest {
                 .setCurrentPatch("16.21");
 
         MetadataDTO expectedDto = new MetadataDTO()
-                .setCurrentSeasonOrSet(16)
+                .setCurrentSeason(16)
                 .setCurrentPatch("16.21");
 
         when(service.getMetadata()).thenReturn(metadata);

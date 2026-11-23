@@ -1,6 +1,6 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.riot;
 
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.Mastery;
 import com.krazytop.leagueoflegends.domain.port.out.mastery.MasteryRiotPort;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.MasteryRiotMapper;

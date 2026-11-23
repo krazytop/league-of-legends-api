@@ -8,7 +8,7 @@ Fonctionnalité: Gestion des classements des invocateurs
         "puuid": "puuid-1234",
         "seasonOrSetRanks": [
           {
-            "seasonOrSetNumber": 16,
+            "season": 16,
             "queueRanks": [
               {
                 "name": "RANKED_SOLO_5x5",
@@ -42,7 +42,7 @@ Fonctionnalité: Gestion des classements des invocateurs
       """json
       [
         {
-          "seasonOrSetNumber": 16,
+          "season": 16,
           "queueRanks": [
             {
               "name": "RANKED_SOLO_5x5",
@@ -93,7 +93,7 @@ Fonctionnalité: Gestion des classements des invocateurs
         "puuid": "puuid-1234",
         "seasonOrSetRanks": [
           {
-            "seasonOrSetNumber": 15,
+            "season": 15,
             "queueRanks": [
               {
                 "name": "RANKED_SOLO_5x5",
@@ -111,7 +111,7 @@ Fonctionnalité: Gestion des classements des invocateurs
             ]
           },
           {
-            "seasonOrSetNumber": 16,
+            "season": 16,
             "queueRanks": [
               {
                 "name": "RANKED_SOLO_5x5",
@@ -131,6 +131,7 @@ Fonctionnalité: Gestion des classements des invocateurs
         ]
       }
       """
+    Et que le summoner "puuid-1234" est sur la region EUW1
     Et que l'API Riot renvoie les classements suivants pour le puuid "puuid-1234" :
       """json
       [
@@ -170,7 +171,7 @@ Fonctionnalité: Gestion des classements des invocateurs
         "puuid": "puuid-1234",
         "seasonOrSetRanks": [
           {
-            "seasonOrSetNumber": 15,
+            "season": 15,
             "queueRanks": [
               {
                 "name": "RANKED_SOLO_5x5",
@@ -188,7 +189,7 @@ Fonctionnalité: Gestion des classements des invocateurs
             ]
           },
           {
-            "seasonOrSetNumber": 16,
+            "season": 16,
             "queueRanks": [
               {
                 "name": "RANKED_SOLO_5x5",
@@ -244,7 +245,7 @@ Fonctionnalité: Gestion des classements des invocateurs
         "puuid": "puuid-1234",
         "seasonOrSetRanks": [
           {
-            "seasonOrSetNumber": 16,
+            "season": 16,
             "queueRanks": [
               {
                 "name": "RANKED_SOLO_5x5",
@@ -264,6 +265,7 @@ Fonctionnalité: Gestion des classements des invocateurs
         ]
       }
       """
+    Et que le summoner "puuid-1234" est sur la region EUW1
     Et que l'API Riot renvoie les classements suivants pour le puuid "puuid-1234" :
       """json
       [
@@ -290,7 +292,7 @@ Fonctionnalité: Gestion des classements des invocateurs
         "puuid": "puuid-1234",
         "seasonOrSetRanks": [
           {
-            "seasonOrSetNumber": 16,
+            "season": 16,
             "queueRanks": [
               {
                 "name": "RANKED_SOLO_5x5",
@@ -320,6 +322,7 @@ Fonctionnalité: Gestion des classements des invocateurs
       }
       """
     Et que la collection "Rank" est vide
+    Et que le summoner "puuid-1234" est sur la region EUW1
     Et que l'API Riot renvoie les classements suivants pour le puuid "puuid-1234" :
       """json
       [
@@ -346,7 +349,7 @@ Fonctionnalité: Gestion des classements des invocateurs
         "puuid": "puuid-1234",
         "seasonOrSetRanks": [
           {
-            "seasonOrSetNumber": 16,
+            "season": 16,
             "queueRanks": [
               {
                 "name": "RANKED_SOLO_5x5",
@@ -366,3 +369,20 @@ Fonctionnalité: Gestion des classements des invocateurs
         ]
       }
       """
+
+  Scénario: Mettre à jour les classements d'un invocateur non-importé
+    Etant donné que la collection "Rank" est vide
+    Et que la collection "Summoner" est vide
+    Quand j'appelle PUT "/rank/puuid-1234"
+    Alors le statut HTTP est 404
+    Et la réponse JSON est :
+      """json
+      {
+          "detail": "L'invocateur doit être importé avant de faire cette action",
+          "instance": "/rank/puuid-1234",
+          "status": 404,
+          "title": "Not Found",
+          "type": "about:blank"
+      }
+      """
+    Et la collection "Rank" est vide

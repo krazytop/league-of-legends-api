@@ -37,7 +37,7 @@ class MetadataServiceTest {
     }
 
     @Test
-    void getCurrentSeasonOrSet() {
+    void getCurrentSeason() {
         // Arrange
         Metadata metadata = new Metadata()
                 .setCurrentSeason(16);

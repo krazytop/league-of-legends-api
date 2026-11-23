@@ -1,6 +1,6 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo;
 
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.Summoner;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.SummonerDocument;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.mapper.SummonerMongoMapper;
@@ -41,9 +41,9 @@ class SummonerMongoAdapterTest {
                 .setPuuid(puuid)
                 .setName("Krazytop")
                 .setTag("EUW")
-                .setRegion("EUW1")
+                .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         when(repository.findByPuuid(puuid)).thenReturn(Optional.ofNullable(document));
 
@@ -53,7 +53,7 @@ class SummonerMongoAdapterTest {
                 .setTag("EUW")
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         // Act
         Optional<Summoner> result = summonerMongoAdapter.findSummoner(puuid);
@@ -86,9 +86,9 @@ class SummonerMongoAdapterTest {
                 .setPuuid("test-puuid-123")
                 .setName(name)
                 .setTag(tag)
-                .setRegion("EUW1")
+                .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         when(repository.findFirstByTagAndName(tag, name)).thenReturn(Optional.of(document));
 
@@ -98,7 +98,7 @@ class SummonerMongoAdapterTest {
                 .setTag(tag)
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         // Act
         Optional<Summoner> result = summonerMongoAdapter.findSummoner(tag, name);
@@ -132,15 +132,15 @@ class SummonerMongoAdapterTest {
                 .setTag("EUW")
                 .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         SummonerDocument expectedDocument = new SummonerDocument()
                 .setPuuid("test-puuid-123")
                 .setName("Krazytop")
                 .setTag("EUW")
-                .setRegion("EUW1")
+                .setRegion(EnumRegion.EUW1)
                 .setLevel(450)
-                .setIcon(4567);
+                .setIcon("4567");
 
         when(repository.save(any(SummonerDocument.class))).thenReturn(expectedDocument);
 

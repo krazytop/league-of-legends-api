@@ -10,6 +10,6 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 @Mapper(componentModel = SPRING)
 public interface MetadataRestMapper {
 
-    @Mapping(target = "currentSeasonOrSet", source = "currentSeason")
+    @Mapping(target = "currentSeason", source = "currentSeason")
     MetadataDTO toDTO(Metadata model);
 }

@@ -13,7 +13,7 @@ public class PatchService {
     private final PatchRepositoryPort repositoryPort;
 
     /**
-     * Récupère le patch pour une version et une langue précises
+     * Récupère le patch pour une version et une langue précises.
      *
      * @param patchId l'id du patch
      * @param language la langue voulue

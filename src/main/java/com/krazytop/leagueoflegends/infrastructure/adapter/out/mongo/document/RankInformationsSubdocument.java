@@ -10,7 +10,7 @@ public class RankInformationsSubdocument {
     private Instant date;
     private String tier;
     private String rank;
-    private Integer leaguePoints;
-    private Integer wins;
-    private Integer losses;
+    private int leaguePoints;
+    private int wins;
+    private int losses;
 }

@@ -2,6 +2,8 @@ package com.krazytop.leagueoflegends.cucumber.steps;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.krazytop.leagueoflegends.cucumber.LeagueOfLegendsIT;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
+import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.document.SummonerDocument;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Etantdonnéqu;
 import io.cucumber.java.fr.Etantdonnéque;
@@ -12,7 +14,12 @@ public class PreparationBddStep extends LeagueOfLegendsIT {
 
     @Before
     public void resetDatabase() {
-        mongoTemplate.getDb().drop();//TODO il faudra drop collection par collection en excluant les references...
+        mongoTemplate.getDb().drop();
+    }
+
+    @Etantdonnéque("le summoner {string} est sur la region {}")
+    public void insertSummonerWithRegion(String puuid, EnumRegion region) {
+        mongoTemplate.insert(new SummonerDocument().setPuuid(puuid).setRegion(region), "Summoner");
     }
 
     @Etantdonnéqu("on insère dans la collection {string} le document suivant :")
@@ -23,7 +30,7 @@ public class PreparationBddStep extends LeagueOfLegendsIT {
         mongoTemplate.insert(document, collectionName);
     }
 
-    @Etantdonnéque("l'on insère dans la collection {string} les documents suivants :")
+    @Etantdonnéque("on insère dans la collection {string} les documents suivants :")
     public void insertDocumentsInCollection(String collectionName, String jsonPayload) throws Exception {
         Class<?> documentClass = collectionRegistry.resolveClass(collectionName);
         jsonPayload = cucumberContext.resolveDynamicData(jsonPayload);

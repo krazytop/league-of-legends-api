@@ -66,6 +66,7 @@ Fonctionnalité: Gestion des maîtrises de champions
       ]
     }
       """
+    Et que le summoner "puuid-1234" est sur la region EUW1
     Et que l'API Riot renvoie les maîtrises suivantes pour le puuid "puuid-1234" :
     """json
     [
@@ -141,6 +142,7 @@ Fonctionnalité: Gestion des maîtrises de champions
 
   Scénario: Mettre à jour les maîtrises d'un nouvel invocateur
     Etant donné que la collection "Mastery" est vide
+    Et que le summoner "puuid-1234" est sur la region EUW1
     Et que l'API Riot renvoie les maîtrises suivantes pour le puuid "puuid-1234" :
     """json
     [
@@ -213,3 +215,20 @@ Fonctionnalité: Gestion des maîtrises de champions
       ]
     }
       """
+
+  Scénario: Mettre à jour les maîtrises d'un invocateur non-importé
+    Etant donné que la collection "Mastery" est vide
+    Et que la collection "Summoner" est vide
+    Quand j'appelle PUT "/mastery/puuid-1234"
+    Alors le statut HTTP est 404
+    Et la réponse JSON est :
+      """json
+      {
+          "detail": "L'invocateur doit être importé avant de faire cette action",
+          "instance": "/mastery/puuid-1234",
+          "status": 404,
+          "title": "Not Found",
+          "type": "about:blank"
+      }
+      """
+    Et la collection "Mastery" est vide

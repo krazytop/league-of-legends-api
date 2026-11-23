@@ -1,6 +1,6 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo;
 
-import com.krazytop.leagueoflegends.domain.model.SeasonOrSetRanks;
+import com.krazytop.leagueoflegends.domain.model.SeasonRanks;
 import com.krazytop.leagueoflegends.domain.port.out.rank.RankRepositoryPort;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.mapper.RankMongoMapper;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.repository.RankMongoRepository;
@@ -20,7 +20,7 @@ public class RankMongoAdapter implements RankRepositoryPort {
     /**
      * {@inheritDoc}
      */
-    public List<SeasonOrSetRanks> findRanks(String puuid) {
+    public List<SeasonRanks> findRanks(String puuid) {
         return repository.findByPuuid(puuid)
                 .map(ranksDocument -> mapper.toModels(ranksDocument.getSeasonOrSetRanks()))
                 .orElse(new ArrayList<>());
@@ -29,7 +29,7 @@ public class RankMongoAdapter implements RankRepositoryPort {
     /**
      * {@inheritDoc}
      */
-    public void saveRanks(List<SeasonOrSetRanks> ranks, String puuid) {
+    public void saveRanks(List<SeasonRanks> ranks, String puuid) {
         repository.save(
                 mapper.toDocument(puuid, ranks));
     }

@@ -10,7 +10,7 @@ Fonctionnalité: Gestion des invocateurs
         "tag": "EUW",
         "region": "EUW1",
         "level": 450,
-        "icon": 4567,
+        "icon": "4567",
         "updateDate": "2026-11-17T12:00:00Z",
         "spentTime": 123456,
         "playedSeasons": [13, 14, 15]
@@ -30,7 +30,7 @@ Fonctionnalité: Gestion des invocateurs
         "tag": "EUW",
         "region": "EUW1",
         "level": 450,
-        "icon": 4567,
+        "icon": "4567",
         "updateDate": "2026-11-17T12:00:00Z",
         "spentTime": 123456,
         "playedSeasonsOrSets": [13, 14, 15]
@@ -73,8 +73,7 @@ Fonctionnalité: Gestion des invocateurs
         "tag": "NA1",
         "region": "NA1",
         "level": 600,
-        "icon": 1234,
-        "updateDate": null,
+        "icon": "1234",
         "spentTime": 0,
         "playedSeasonsOrSets": []
       }
@@ -98,7 +97,7 @@ Fonctionnalité: Gestion des invocateurs
         "tag": "EUW",
         "region": "EUW1",
         "level": 450,
-        "icon": 4567,
+        "icon": "4567",
         "updateDate": "2026-11-17T12:00:00Z",
         "spentTime": 123456,
         "playedSeasonsOrSets": [13, 14, 15]
@@ -141,8 +140,7 @@ Fonctionnalité: Gestion des invocateurs
         "tag": "NA1",
         "region": "NA1",
         "level": 600,
-        "icon": 1234,
-        "updateDate": null,
+        "icon": "1234",
         "spentTime": 0,
         "playedSeasonsOrSets": []
       }
@@ -191,7 +189,7 @@ Fonctionnalité: Gestion des invocateurs
         "tag": "NA1",
         "region": "NA1",
         "level": 600,
-        "icon": 1234,
+        "icon": "1234",
         "updateDate": "@INSTANT_ACTUEL@",
         "spentTime": 0,
         "playedSeasonsOrSets": []
@@ -206,7 +204,7 @@ Fonctionnalité: Gestion des invocateurs
           "tag": "EUW",
           "region": "EUW1",
           "level": 450,
-          "icon": 4567,
+          "icon": "4567",
           "updateDate": "2026-11-17T12:00:00Z",
           "spentTime": 123456,
           "playedSeasons": [13, 14, 15]
@@ -217,7 +215,7 @@ Fonctionnalité: Gestion des invocateurs
           "tag": "NA1",
           "region": "NA1",
           "level": 600,
-          "icon": 1234,
+          "icon": "1234",
           "updateDate": "@INSTANT_ACTUEL@",
           "spentTime": 0,
           "playedSeasons": []
@@ -261,7 +259,7 @@ Fonctionnalité: Gestion des invocateurs
         "tag": "FR1",
         "region": "EUW1",
         "level": 455,
-        "icon": 9999,
+        "icon": "9999",
         "updateDate": "@INSTANT_ACTUEL@",
         "spentTime": 123456,
         "playedSeasonsOrSets": [13, 14, 15]
@@ -275,7 +273,7 @@ Fonctionnalité: Gestion des invocateurs
         "tag": "FR1",
         "region": "EUW1",
         "level": 455,
-        "icon": 9999,
+        "icon": "9999",
         "updateDate": "@INSTANT_ACTUEL@",
         "spentTime": 123456,
         "playedSeasons": [13, 14, 15]

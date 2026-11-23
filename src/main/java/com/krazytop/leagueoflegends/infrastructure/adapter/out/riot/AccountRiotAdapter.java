@@ -1,8 +1,7 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.riot;
 
 import com.krazytop.leagueoflegends.domain.model.Account;
-import com.krazytop.leagueoflegends.domain.model.EnumGlobalRegion;
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.port.out.account.AccountRiotPort;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.AccountRiotMapper;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.ShardRiotMapper;
@@ -20,6 +19,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AccountRiotAdapter implements AccountRiotPort {
 
+    private static final RegionShard SHARD = RegionShard.EUROPE;
+
     private final R4J r4j;
     private final ShardRiotMapper shardMapper;
     private final AccountRiotMapper accountMapper;
@@ -27,43 +28,36 @@ public class AccountRiotAdapter implements AccountRiotPort {
     /**
      * {@inheritDoc}
      */
-    public Optional<Account> fetchAccount(EnumGlobalRegion globalRegion, String puuid) {
-        RegionShard shard = shardMapper.toDTO(globalRegion);
-
+    public Optional<Account> fetchAccount(String puuid) {
         RiotAccount account = r4j.getAccountAPI()
-                .getAccountByPUUID(shard, puuid);
+                .getAccountByPUUID(SHARD, puuid);
 
         return Optional.ofNullable(account)
                 .map(a -> accountMapper.toModel(a)
-                .setRegion(fetchAccountRegion(globalRegion, puuid)));
+                .setRegion(fetchAccountRegion(puuid)));
     }
 
     /**
      * {@inheritDoc}
      */
-    public Optional<Account> fetchAccount(EnumGlobalRegion globalRegion, String name, String tag) {
-        RegionShard shard = shardMapper.toDTO(globalRegion);
-
+    public Optional<Account> fetchAccount(String name, String tag) {
         RiotAccount account = r4j.getAccountAPI()
-                .getAccountByTag(shard, name, tag);
+                .getAccountByTag(SHARD, name, tag);
 
         return Optional.ofNullable(account)
                 .map(a -> accountMapper.toModel(a)
-                        .setRegion(fetchAccountRegion(globalRegion, account.getPUUID())));
+                        .setRegion(fetchAccountRegion(account.getPUUID())));
     }
 
     /**
      * Récupère la region associée à l'invocateur
      *
-     * @param globalRegion région globale de l'invocateur
      * @param puuid le puuid de l'invocateur
      * @return la région de l'invocateur
      */
-    private EnumRegion fetchAccountRegion(EnumGlobalRegion globalRegion, String puuid) {
-        RegionShard shard = shardMapper.toDTO(globalRegion);
-
+    private EnumRegion fetchAccountRegion(String puuid) {
         return Optional.ofNullable(r4j.getAccountAPI()
-                .getActiveRegion(shard, ShardableGame.LOL, puuid))
+                .getActiveRegion(SHARD, ShardableGame.LOL, puuid))
                 .map(RiotAccountRegion::getRegion)
                 .map(EnumRegion::fromCode)
                 .orElse(null);

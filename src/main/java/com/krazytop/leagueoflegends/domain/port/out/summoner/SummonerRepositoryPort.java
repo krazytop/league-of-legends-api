@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface SummonerRepositoryPort {
 
     /**
-     * Récupère un invocateur depuis la BDD
+     * Récupère un invocateur depuis la BDD.
      *
      * @param puuid le puuid de l'invocateur
      * @return l'invocateur
@@ -15,7 +15,7 @@ public interface SummonerRepositoryPort {
     Optional<Summoner> findSummoner(String puuid);
 
     /**
-     * Récupère un invocateur depuis la BDD
+     * Récupère un invocateur depuis la BDD.
      *
      * @param tag le tag de l'invocateur
      * @param name le nom de l'invocateur
@@ -24,7 +24,7 @@ public interface SummonerRepositoryPort {
     Optional<Summoner> findSummoner(String tag, String name);
 
     /**
-     * Met à jour l'invocateur en BDD
+     * Met à jour l'invocateur en BDD.
      *
      * @param summoner l'invocateur
      * @return l'invocateur mis à jour

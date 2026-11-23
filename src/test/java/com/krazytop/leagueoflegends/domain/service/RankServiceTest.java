@@ -1,9 +1,9 @@
 package com.krazytop.leagueoflegends.domain.service;
 
-import com.krazytop.leagueoflegends.domain.model.EnumRegion;
+import com.krazytop.leagueoflegends.domain.model.SeasonRanks;
+import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
 import com.krazytop.leagueoflegends.domain.model.QueueRanks;
 import com.krazytop.leagueoflegends.domain.model.RankInformations;
-import com.krazytop.leagueoflegends.domain.model.SeasonOrSetRanks;
 import com.krazytop.leagueoflegends.domain.port.out.rank.RankRepositoryPort;
 import com.krazytop.leagueoflegends.domain.port.out.rank.RankRiotPort;
 import org.junit.jupiter.api.Test;
@@ -36,6 +36,9 @@ class RankServiceTest {
     @Mock
     private MetadataService metadataService;
 
+    @Mock
+    private SummonerService summonerService;
+
     @Spy
     private Clock clock = Clock.fixed(INSTANT_ACTUEL, ZoneOffset.UTC);
 
@@ -46,11 +49,11 @@ class RankServiceTest {
     void getRanks() {
         // Arrange
         String puuid = "test-puuid-123";
-        List<SeasonOrSetRanks> expectedRanks = List.of(mock(SeasonOrSetRanks.class));
+        List<SeasonRanks> expectedRanks = List.of(mock(SeasonRanks.class));
         when(repositoryPort.findRanks(puuid)).thenReturn(expectedRanks);
 
         // Act
-        List<SeasonOrSetRanks> result = rankService.getRanks(puuid);
+        List<SeasonRanks> result = rankService.getRanks(puuid);
 
         // Assert
         assertThat(result).isEqualTo(expectedRanks);
@@ -64,12 +67,12 @@ class RankServiceTest {
         String puuid = "test-puuid-123";
         Instant oldDate = Instant.parse("2026-10-01T12:00:00Z");
 
-        SeasonOrSetRanks previousSeason = new SeasonOrSetRanks()
-                .setSeasonOrSetNumber(15)
+        SeasonRanks previousSeason = new SeasonRanks()
+                .setSeason(15)
                 .setQueueRanks(List.of());
 
-        SeasonOrSetRanks existingCurrentSeason = new SeasonOrSetRanks()
-                .setSeasonOrSetNumber(16)
+        SeasonRanks existingCurrentSeason = new SeasonRanks()
+                .setSeason(16)
                 .setQueueRanks(List.of(
                         new QueueRanks()
                                 .setName("RANKED_SOLO_5x5")
@@ -107,10 +110,10 @@ class RankServiceTest {
                         ))
         );
 
-        List<SeasonOrSetRanks> expectedSavedRanks = List.of(
+        List<SeasonRanks> expectedSavedRanks = List.of(
                 previousSeason,
-                new SeasonOrSetRanks()
-                        .setSeasonOrSetNumber(16)
+                new SeasonRanks()
+                        .setSeason(16)
                         .setQueueRanks(List.of(
                                 new QueueRanks()
                                         .setName("RANKED_SOLO_5x5")
@@ -144,6 +147,7 @@ class RankServiceTest {
         );
 
         when(metadataService.getCurrentSeason()).thenReturn(16);
+        when(summonerService.getSummonerRegion(puuid)).thenReturn(EnumRegion.EUW1);
         when(riotPort.fetchRanks(EnumRegion.EUW1, puuid)).thenReturn(fetchedQueues);
         when(repositoryPort.findRanks(puuid)).thenReturn(List.of(previousSeason, existingCurrentSeason));
 
@@ -151,11 +155,13 @@ class RankServiceTest {
         rankService.updateRanks(puuid);
 
         // Assert
-        ArgumentCaptor<List<SeasonOrSetRanks>> ranksCaptor = ArgumentCaptor.captor();
+        ArgumentCaptor<List<SeasonRanks>> ranksCaptor = ArgumentCaptor.captor();
         verify(repositoryPort).saveRanks(ranksCaptor.capture(), eq(puuid));
         assertThat(ranksCaptor.getValue())
                 .usingRecursiveComparison()
                 .isEqualTo(expectedSavedRanks);
+        verify(metadataService).getCurrentSeason();
+        verify(summonerService).getSummonerRegion(puuid);
     }
 
     @Test
@@ -178,9 +184,9 @@ class RankServiceTest {
                                         .setLosses(90)
                         )));
 
-        List<SeasonOrSetRanks> existingSeasonsRanks = List.of(
-                new SeasonOrSetRanks()
-                        .setSeasonOrSetNumber(16)
+        List<SeasonRanks> existingSeasonsRanks = List.of(
+                new SeasonRanks()
+                        .setSeason(16)
                         .setQueueRanks(List.of(
                                 new QueueRanks()
                                         .setName("RANKED_SOLO_5x5")
@@ -195,9 +201,9 @@ class RankServiceTest {
                                         ))
                         )));
 
-        List<SeasonOrSetRanks> expectedSavedRanks = List.of(
-                new SeasonOrSetRanks()
-                        .setSeasonOrSetNumber(16)
+        List<SeasonRanks> expectedSavedRanks = List.of(
+                new SeasonRanks()
+                        .setSeason(16)
                         .setQueueRanks(List.of(
                                 new QueueRanks()
                                         .setName("RANKED_SOLO_5x5")
@@ -213,6 +219,7 @@ class RankServiceTest {
                         )));
 
         when(metadataService.getCurrentSeason()).thenReturn(16);
+        when(summonerService.getSummonerRegion(puuid)).thenReturn(EnumRegion.EUW1);
         when(riotPort.fetchRanks(EnumRegion.EUW1, puuid)).thenReturn(fetchedQueueRankWithNoChanges);
         when(repositoryPort.findRanks(puuid)).thenReturn(existingSeasonsRanks);
 
@@ -221,5 +228,7 @@ class RankServiceTest {
 
         // Assert
         verify(repositoryPort).saveRanks(expectedSavedRanks, puuid);
+        verify(metadataService).getCurrentSeason();
+        verify(summonerService).getSummonerRegion(puuid);
     }
 }

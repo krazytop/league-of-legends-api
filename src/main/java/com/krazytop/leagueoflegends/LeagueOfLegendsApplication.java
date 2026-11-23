@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @ConfigurationPropertiesScan
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
-@EnableMongoRepositories(basePackages = {"com.krazytop.leagueoflegends.repository", "com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.repository"})//TODO modifier après migration
+@EnableMongoRepositories(basePackages = "com.krazytop.leagueoflegends.infrastructure.adapter.out.mongo.repository")
 public class LeagueOfLegendsApplication {
 
     public static void main(String[] args) {
