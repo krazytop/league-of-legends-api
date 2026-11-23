@@ -164,16 +164,17 @@ class MatchMongoAdapterTest {
         Document queryDoc = queryCaptor.getValue().getQueryObject();
         List<Document> andClauses = queryDoc.getList("$and", Document.class);
 
-        assertThat(andClauses).hasSize(4);
-        assertThat(andClauses).anySatisfy(d -> assertThat(d.getString("owners")).isEqualTo(PUUID));
-        assertThat(andClauses).anySatisfy(d -> {
-            assertThat(d.get("queue")).isInstanceOf(Document.class);
-            Document inClause = (Document) d.get("queue");
-            assertThat(inClause.getList("$in", String.class))
-                    .containsExactlyInAnyOrderElementsOf(QueueMappingHelper.resolveQueueIds(EnumQueue.SOLO_RANKED));
-        });
-        assertThat(andClauses).anySatisfy(d -> assertThat(d.getInteger("season")).isEqualTo(16));
-        assertThat(andClauses).anySatisfy(d -> {
+        assertThat(andClauses)
+                .hasSize(4)
+                .anySatisfy(d -> assertThat(d.getString("owners")).isEqualTo(PUUID))
+                .anySatisfy(d -> {
+                    assertThat(d.get("queue")).isInstanceOf(Document.class);
+                    Document inClause = (Document) d.get("queue");
+                    assertThat(inClause.getList("$in", String.class))
+                            .containsExactlyInAnyOrderElementsOf(QueueMappingHelper.resolveQueueIds(EnumQueue.SOLO_RANKED));
+                })
+                .anySatisfy(d -> assertThat(d.getInteger("season")).isEqualTo(16))
+                .anySatisfy(d -> {
             assertThat(d.get("teams.participants")).isInstanceOf(Document.class);
             Document elemMatch = ((Document) d.get("teams.participants")).get("$elemMatch", Document.class);
             assertThat(elemMatch)

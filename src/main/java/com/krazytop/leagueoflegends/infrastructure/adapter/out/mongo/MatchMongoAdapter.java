@@ -36,6 +36,8 @@ public class MatchMongoAdapter implements MatchRepositoryPort {
     private final MatchMongoMapper mapper;
     private final MongoTemplate mongoTemplate;
 
+    private static final String OWNERS = "owners";
+
     /**
      * {@inheritDoc}
      */
@@ -65,7 +67,7 @@ public class MatchMongoAdapter implements MatchRepositoryPort {
             return Set.of();
         }
 
-        Query query = new Query(Criteria.where("_id").in(matchIds).and("owners").is(puuid));
+        Query query = new Query(Criteria.where("_id").in(matchIds).and(OWNERS).is(puuid));
         query.fields().include("_id");
 
         return mongoTemplate.find(query, MatchDocument.class).stream()
@@ -87,7 +89,7 @@ public class MatchMongoAdapter implements MatchRepositoryPort {
                 .include("queue")
                 .elemMatch("participants", Criteria.where("puuid").is(puuid));
 
-        Update update = new Update().addToSet("owners", puuid);
+        Update update = new Update().addToSet(OWNERS, puuid);
 
         MatchDocument match = mongoTemplate.findAndModify(
                 query,
@@ -122,7 +124,7 @@ public class MatchMongoAdapter implements MatchRepositoryPort {
         List<Criteria> criteriaList = new ArrayList<>();
 
         if (StringUtils.isNotBlank(searchCriteria.getPuuid())) {
-            criteriaList.add(Criteria.where("owners").is(searchCriteria.getPuuid()));
+            criteriaList.add(Criteria.where(OWNERS).is(searchCriteria.getPuuid()));
         }
         if (searchCriteria.getQueue()  != null) {
             criteriaList.add(Criteria.where("queue").in(QueueMappingHelper.resolveQueueIds(searchCriteria.getQueue())));

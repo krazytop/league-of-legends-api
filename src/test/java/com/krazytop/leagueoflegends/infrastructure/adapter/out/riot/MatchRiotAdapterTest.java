@@ -1,7 +1,11 @@
 package com.krazytop.leagueoflegends.infrastructure.adapter.out.riot;
 
+import com.krazytop.leagueoflegends.domain.model.Summoner;
 import com.krazytop.leagueoflegends.domain.model.enums.EnumRegion;
-import com.krazytop.leagueoflegends.domain.model.match.*;
+import com.krazytop.leagueoflegends.domain.model.match.Match;
+import com.krazytop.leagueoflegends.domain.model.match.Participant;
+import com.krazytop.leagueoflegends.domain.model.match.RunesStats;
+import com.krazytop.leagueoflegends.domain.model.match.Team;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.common.QueueMappingHelper;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.DateRiotMapper;
 import com.krazytop.leagueoflegends.infrastructure.adapter.out.riot.mapper.MatchRiotMapper;
@@ -12,6 +16,7 @@ import no.stelar7.api.r4j.basic.utils.Utils;
 import no.stelar7.api.r4j.impl.R4J;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.pojo.shared.GAMHSMatch;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -72,13 +77,11 @@ class MatchRiotAdapterTest {
         })) {
             Match result = adapter.getMatch(EnumRegion.EUW1, matchId);
 
-            assertThat(result.getId()).isEqualTo("EUW1_7939943973");
-            assertThat(result.getVersion()).isEqualTo("16.15");
-            assertThat(result.getSeason()).isEqualTo(16);
-            assertThat(result.getDatetime()).isEqualTo(Instant.parse("2026-08-04T13:28:32.620Z"));
-            assertThat(result.getDuration()).isEqualTo(2268L);
-            assertThat(result.getQueue()).isEqualTo(QueueMappingHelper.toQueue(420));
-            assertThat(result.isRemake()).isFalse();
+            assertThat(result)
+                    .extracting(Match::getId, Match::getVersion, Match::getSeason, Match::getDatetime,
+                            Match::getDuration, Match::getQueue, Match::isRemake)
+                    .containsExactly("EUW1_7939943973", "16.15", 16, Instant.parse("2026-08-04T13:28:32.620Z"),
+                            2268L, QueueMappingHelper.toQueue(420), false);
             assertThat(result.getOwners()).isNullOrEmpty();
 
             // 2 équipes classiques (100 et 200)
@@ -102,35 +105,25 @@ class MatchRiotAdapterTest {
 
             // Participant 1 : Darius
             Participant darius = blueTeam.getParticipants().getFirst();
-            assertThat(darius.getChampion()).isEqualTo("122");
-            assertThat(darius.getChampLevel()).isEqualTo(20);
-            assertThat(darius.getKills()).isEqualTo(12);
-            assertThat(darius.getAssists()).isEqualTo(7);
-            assertThat(darius.getDeaths()).isEqualTo(9);
-            assertThat(darius.getRole()).isEqualTo("TOP");
-            assertThat(darius.getVisionScore()).isEqualTo(23);
-            assertThat(darius.getMinions()).isEqualTo(238);
-            assertThat(darius.getNeutralMinions()).isEqualTo(4);
-            assertThat(darius.getDoubleKills()).isEqualTo(2);
-            assertThat(darius.getPhysicalDamageDealtToChampions()).isEqualTo(45893);
-            assertThat(darius.getMagicDamageDealtToChampions()).isZero();
-            assertThat(darius.getTrueDamageDealtToChampions()).isEqualTo(17594);
-            assertThat(darius.getPhysicalDamageTaken()).isEqualTo(32511);
-            assertThat(darius.getMagicDamageTaken()).isEqualTo(29405);
-            assertThat(darius.getTrueDamageTaken()).isEqualTo(6431);
-            assertThat(darius.getGolds()).isEqualTo(16241);
-            assertThat(darius.getGameEndedInEarlySurrender()).isFalse();
-            assertThat(darius.getItem0()).isEqualTo("3143");
-            assertThat(darius.getItem5()).isEqualTo("3742");
-            assertThat(darius.getWard()).isEqualTo("3340");
-            assertThat(darius.getSummonerSpell1()).isEqualTo("4");
-            assertThat(darius.getSummonerSpell2()).isEqualTo("14");
-            assertThat(darius.getSummoner().getPuuid())
-                    .isEqualTo("30EQ2MYfgZvzSSGUaxwWd6mcz47wt4ZRcYl8SINmrsRnQblLVsomDlQzF7pmnN7TA43h4p3UO6KNCw");
-            assertThat(darius.getSummoner().getName()).isEqualTo("Beewer");
-            assertThat(darius.getSummoner().getTag()).isEqualTo("EUW");
-            assertThat(darius.getSummoner().getLevel()).isEqualTo(548);
-            assertThat(darius.getSummoner().getIcon()).isEqualTo("4748");
+            assertThat(darius)
+                    .extracting(Participant::getChampion, Participant::getChampLevel, Participant::getKills,
+                            Participant::getAssists, Participant::getDeaths, Participant::getRole,
+                            Participant::getVisionScore, Participant::getMinions, Participant::getNeutralMinions,
+                            Participant::getDoubleKills, Participant::getPhysicalDamageDealtToChampions,
+                            Participant::getMagicDamageDealtToChampions, Participant::getTrueDamageDealtToChampions,
+                            Participant::getPhysicalDamageTaken, Participant::getMagicDamageTaken,
+                            Participant::getTrueDamageTaken, Participant::getGolds,
+                            Participant::getGameEndedInEarlySurrender, Participant::getItem0,
+                            Participant::getItem5, Participant::getWard, Participant::getSummonerSpell1,
+                            Participant::getSummonerSpell2, Participant::getAugment1)
+                    .containsExactly("122", 20, 12, 7, 9, "TOP", 23, 238, 4, 2, 45893, 0, 17594,
+                            32511, 29405, 6431, 16241, false, "3143", "3742", "3340", "4", "14", null);
+
+            assertThat(darius.getSummoner())
+                    .extracting(Summoner::getPuuid, Summoner::getName, Summoner::getTag, Summoner::getLevel, Summoner::getIcon)
+                    .containsExactly("30EQ2MYfgZvzSSGUaxwWd6mcz47wt4ZRcYl8SINmrsRnQblLVsomDlQzF7pmnN7TA43h4p3UO6KNCw",
+                            "Beewer", "EUW", 548, "4748");
+
             assertThat(darius.getRunes().getStats())
                     .extracting(RunesStats::getDefense, RunesStats::getFlex, RunesStats::getOffense)
                     .containsExactly("5001", "5008", "5005");
@@ -138,7 +131,6 @@ class MatchRiotAdapterTest {
             assertThat(darius.getRunes().getRuneCategories().getFirst().getStyle()).isEqualTo("8000");
             assertThat(darius.getRunes().getRuneCategories().getFirst().getPerks())
                     .containsExactly("8010", "9111", "9104", "8299");
-            assertThat(darius.getAugment1()).isNull();
 
             // Participant 4 : Aphelios (vérifie item5 == 0 -> null)
             Participant aphelios = blueTeam.getParticipants().get(3);
@@ -156,16 +148,13 @@ class MatchRiotAdapterTest {
             when(mock.withContext(any())).thenReturn(mock);
             when(mock.getMatchRAW()).thenReturn(rawMatch);
         })) {
-
             Match result = adapter.getMatch(EnumRegion.EUW1, matchId);
 
-            assertThat(result.getId()).isEqualTo("EUW1_7941319192");
-            assertThat(result.getVersion()).isEqualTo("16.15");
-            assertThat(result.getSeason()).isEqualTo(16);
-            assertThat(result.getDatetime()).isEqualTo(Instant.parse("2026-08-05T18:30:37.751Z"));
-            assertThat(result.getDuration()).isEqualTo(1411L);
-            assertThat(result.getQueue()).isEqualTo(QueueMappingHelper.toQueue(1750));
-            assertThat(result.isRemake()).isFalse();
+            assertThat(result)
+                    .extracting(Match::getId, Match::getVersion, Match::getSeason, Match::getDatetime,
+                            Match::getDuration, Match::getQueue, Match::isRemake)
+                    .containsExactly("EUW1_7941319192", "16.15", 16, Instant.parse("2026-08-05T18:30:37.751Z"),
+                            1411L, QueueMappingHelper.toQueue(1750), false);
             assertThat(result.getOwners()).isNullOrEmpty();
 
             // 6 équipes de 3 invocateurs triées par placement (1 -> 6)
@@ -173,12 +162,12 @@ class MatchRiotAdapterTest {
             assertThat(result.getTeams())
                     .extracting(Team::getId, Team::getPlacement, Team::isHasWin)
                     .containsExactly(
-                            org.assertj.core.groups.Tuple.tuple("5", 1, true),
-                            org.assertj.core.groups.Tuple.tuple("1", 2, true),
-                            org.assertj.core.groups.Tuple.tuple("4", 3, true),
-                            org.assertj.core.groups.Tuple.tuple("2", 4, false),
-                            org.assertj.core.groups.Tuple.tuple("6", 5, false),
-                            org.assertj.core.groups.Tuple.tuple("3", 6, false)
+                            Tuple.tuple("5", 1, true),
+                            Tuple.tuple("1", 2, true),
+                            Tuple.tuple("4", 3, true),
+                            Tuple.tuple("2", 4, false),
+                            Tuple.tuple("6", 5, false),
+                            Tuple.tuple("3", 6, false)
                     );
 
             // Team 5 (placement 1) : Braum, Draven, Seraphine
@@ -188,23 +177,18 @@ class MatchRiotAdapterTest {
             assertThat(firstTeam.getParticipants()).hasSize(3);
 
             Participant braum = firstTeam.getParticipants().getFirst();
-            assertThat(braum.getChampion()).isEqualTo("201");
-            assertThat(braum.getRole()).isEqualTo("INVALID");
-            assertThat(braum.getSummoner().getName()).isEqualTo("a 200 dans lmur");
-            assertThat(braum.getSummoner().getTag()).isEqualTo("dead");
-            assertThat(braum.getAugment1()).isEqualTo("193");
-            assertThat(braum.getAugment2()).isEqualTo("216");
-            assertThat(braum.getAugment3()).isEqualTo("219");
-            assertThat(braum.getAugment4()).isNull();
+            assertThat(braum)
+                    .extracting(Participant::getChampion, Participant::getRole,
+                            p -> p.getSummoner().getName(), p -> p.getSummoner().getTag(),
+                            Participant::getAugment1, Participant::getAugment2,
+                            Participant::getAugment3, Participant::getAugment4)
+                    .containsExactly("201", "INVALID", "a 200 dans lmur", "dead", "193", "216", "219", null);
 
             Participant draven = firstTeam.getParticipants().get(1);
-            assertThat(draven.getChampion()).isEqualTo("119");
-            assertThat(draven.getItem0()).isEqualTo("220012");
-            assertThat(draven.getItem1()).isEqualTo("447101");
-            assertThat(draven.getItem2()).isNull();
-            assertThat(draven.getAugment1()).isEqualTo("220");
-            assertThat(draven.getAugment5()).isEqualTo("200");
-            assertThat(draven.getAugment6()).isNull();
+            assertThat(draven)
+                    .extracting(Participant::getChampion, Participant::getItem0, Participant::getItem1,
+                            Participant::getItem2, Participant::getAugment1, Participant::getAugment5, Participant::getAugment6)
+                    .containsExactly("119", "220012", "447101", null, "220", "200", null);
 
             // Team 4 (placement 3) : Twisted Fate possède 6 augments
             Team thirdTeam = result.getTeams().get(2);
